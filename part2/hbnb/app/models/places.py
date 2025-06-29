@@ -29,9 +29,9 @@ class Property(BaseModel):
     def _validate_coordinates(self):
         """Checks if location values are within valid ranges"""
         if not (-90 <= self.lat <= 90):
-            raise ValueError("Latitude must be between -90 and 90")
+            raise ValueError("Lat must be between -90 and 90")
         if not (-180 <= self.lng <= 180):
-            raise ValueError("Longitude must be between -180 and 180")
+            raise ValueError("Lng must be between -180 and 180")
 
     def update_pricing(self, new_rate):
         """Updates the nightly rate with validation"""
