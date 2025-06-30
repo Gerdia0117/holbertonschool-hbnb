@@ -1,56 +1,112 @@
-HBnB Project - Business Logic and API Implementation
-Introduction
+# HBnB Application - Backend System
 
-Welcome to the HBnB Project! This project focuses on building a robust and scalable foundation for the HBnB application by implementing the Business Logic Layer and RESTful API endpoints using Python and Flask.
-Key Concepts Covered:
+![Project Architecture](https://i.imgur.com/JK9yX2C.png)
 
-    In-Memory Persistence in HBnB
+A RESTful API for a vacation rental platform (like Airbnb) built with Python, Flask, and Flask-RESTx.
 
-    Facade Pattern in the HBnB Project
+## Table of Contents
+1. [Project Structure](#project-structure)
+2. [Core Features](#core-features)
+3. [Models](#models)
+4. [API Endpoints](#api-endpoints)
+5. [Setup Instructions](#setup-instructions)
+6. [Testing](#testing)
+7. [Future Improvements](#future-improvements)
 
-Project Overview
+## Project Structure
 
-In this phase, we transition from design to implementation, focusing on:
+## Core Features
 
-    Project Structure Setup: Organizing the application into modular components following Python and Flask best practices.
+- **User Management**: Registration, profiles, authentication
+- **Property Listings**: Create/update rental properties with geo-coordinates
+- **Amenities**: Manage property features (WiFi, Pool, etc.)
+- **Reviews**: Rating system with text comments
+- **In-Memory Database**: Temporary storage (will be replaced with SQLAlchemy)
 
-    Business Logic Implementation: Defining core classes (User, Place, Review, Amenity) and their interactions.
+## Models
 
-    API Development: Creating RESTful endpoints with Flask-RESTx for CRUD operations, ensuring proper data serialization and relationships.
+### Base Model (`base_model.py`)
+```python
+class BaseModel:
+    # Shared attributes:
+    # - id (UUID)
+    # - created_at (timestamp)
+    # - updated_at (timestamp)
+    # - save() method
 
-    Testing & Validation: Verifying API functionality using tools like Postman or cURL.
+class User(BaseModel):
+    # Attributes:
+    # - first_name
+    # - last_name
+    # - email
+    # - password (plaintext - will be hashed later)
+    # - owned_places (list)
 
-Current Scope
+class Property(BaseModel):
+    # Attributes:
+    # - title
+    # - description
+    # - price
+    # - latitude/longitude
+    # - host (User)
+    # - amenities (list)
+    # - reviews (list)
 
-This stage emphasizes:
-Presentation Layer: API endpoint definitions using Flask-RESTx.
-Business Logic Layer: Core models, relationships, and facade pattern implementation.
-Authentication (JWT) and role-based access control will be addressed in a later phase.
-Learning Objectives
+API Endpoints
+Users (/api/v1/users)
+Method	Path	Description
+GET	/	List all users
+POST	/	Create new user
+GET	/<user_id>	Get user details
+PUT	/<user_id>	Update user
+Properties (/api/v1/properties)
+Method	Path	Description
+GET	/	List all properties
+POST	/	Add new property
+GET	/<property_id>	Get property details
+PUT	/<property_id>	Update property
+Amenities (/api/v1/amenities)
+Method	Path	Description
+GET	/	List all amenities
+POST	/	Add new amenity
 
-By completing this project, you will:
+Setup Instructions
 
-    Apply modular design principles in Python/Flask.
+    Install dependencies:
+    pip install flask flask-restx
 
-    Develop RESTful APIs with proper documentation.
+    Run the application:
+    export FLASK_APP=app
+    flask run
 
-    Implement business logic with clean, maintainable code.
+Access the API:
+http://localhost:5000/api/v1/users
 
-    Handle data serialization for nested/related objects.
+Testing
 
-    Strengthen testing/debugging skills for APIs.
+Example test cases are included in the endpoint files. To test:
 
-Getting Started
+# Sample user creation
+curl -X POST http://localhost:5000/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{"first_name":"John", "last_name":"Doe", "email":"john@example.com"}'
 
-Refer to the Recommended Resources for deeper insights into Flask, REST APIs, and design patterns.
+Future Improvements
 
-This README will evolve as the project progresses. Stay tuned for updates!
-Recommended Resources
+    Database Integration: Replace in-memory storage with SQLAlchemy
 
-    Flask Documentation
+    Authentication: Add JWT token support
 
-    Flask-RESTx Documentation
+    Image Uploads: Property photo management
 
-    REST API Best Practices
+    Search: Filter properties by location/price
 
-    Facade Pattern in Python
+    Pagination: For large result sets
+
+Project Status
+
+✅ Core Models Implemented
+✅ Basic API Endpoints
+✅ In-Memory Storage
+🔜 Database Integration
+🔜 User Authentication
