@@ -1,2 +1,3 @@
 flask
 flask-restx
+echo "flask-restx" >> requirements.txt
