@@ -1,7 +1,7 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+from app.models.places import Property
 from app.models.amenity import Amenity
-from app.models.place import Place
 from app.models.review import Review
 
 class RentalServiceFacade:
@@ -11,8 +11,8 @@ class RentalServiceFacade:
         self.review_repository = InMemoryRepository()
         self.amenity_repository = InMemoryRepository()
 
-    def add_user(self, user_details):
-        """Add a new user to the repository."""
+    def create_user(self, user_details):
+        """Create a new user in the repository."""
         new_user = User(**user_details)
         self.user_repository.add(new_user)
         return new_user
@@ -29,17 +29,25 @@ class RentalServiceFacade:
                 return user
         return None
 
-    def list_all_users(self):
+    def get_all_users(self):
         """Get a list of all users."""
         return self.user_repository.get_all()
 
-    def modify_user(self, user_id, updated_info):
+    def update_user(self, user_id, updated_info):
         """Modify an existing user's details."""
         user = self.user_repository.get(user_id)
         if user:
             self.user_repository.update(user_id, updated_info)
             return user
         return None
+
+    def delete_user(self, user_id):
+        """Delete a user from the repository."""
+        return self.user_repository.delete(user_id)
+
+    def get_user(self, user_id):
+        """Retrieve a user using their ID."""
+        return self.user_repository.get(user_id)
 
     def add_amenity(self, amenity_details):
         """Add a new amenity to the repository."""

@@ -1,7 +1,7 @@
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 class Review(BaseModel):
-    def __init__(self, rating=0-5, comment="", user=none, place=none):
+    def __init__(self, rating=1, comment="", user_id=None, place_id=None):
         super().__init__()
         self.rating = rating
         self.comment = comment
