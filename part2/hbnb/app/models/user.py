@@ -13,5 +13,15 @@ class User(BaseModel):
         if place and place.owner == self:
             self.owned_places.append(place)
 
+    def to_dict(self):
+        """Convert user to dictionary representation."""
+        data = super().to_dict()
+        data.update({
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email
+        })
+        return data
+    
     def __str__(self):
         return f"User({self.first_name} {self.last_name}, Email: {self.email})"

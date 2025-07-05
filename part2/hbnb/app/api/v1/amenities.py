@@ -2,9 +2,12 @@
 
 from flask_restx import Namespace, Resource, fields
 from flask import request
-from app.services import facade
+from app.services.facade import RentalServiceFacade
 
 api = Namespace('amenities', description='Amenity management operations')
+
+# Initialize facade instance
+facade = RentalServiceFacade()
 
 amenity_model = api.model('Amenity', {
     'name': fields.String(required=True, description='Name of the amenity')

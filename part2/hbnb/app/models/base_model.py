@@ -10,3 +10,18 @@ class BaseModel:
     def save(self):
         """Update and save when  the object is modified to a database."""
         self.updated_at = datetime.utcnow()
+    
+    def to_dict(self):
+        """Convert object to dictionary representation."""
+        return {
+            'id': self.id,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat()
+        }
+    
+    def update(self, data):
+        """Update object attributes from dictionary."""
+        for key, value in data.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.save()

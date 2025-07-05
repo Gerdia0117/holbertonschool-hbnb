@@ -11,9 +11,9 @@ class RentalServiceFacade:
         self.review_repository = InMemoryRepository()
         self.amenity_repository = InMemoryRepository()
 
-    def create_user(self, user_details):
+    def create_user(self, first_name, last_name, email, password):
         """Create a new user in the repository."""
-        new_user = User(**user_details)
+        new_user = User(first_name=first_name, last_name=last_name, email=email, password=password)
         self.user_repository.add(new_user)
         return new_user
 
@@ -62,6 +62,14 @@ class RentalServiceFacade:
     def list_all_amenities(self):
         """Retrieve a list of all amenities."""
         return self.amenity_repository.get_all()
+    
+    def get_all_amenities(self):
+        """Retrieve a list of all amenities."""
+        return self.amenity_repository.get_all()
+    
+    def get_amenity(self, amenity_id):
+        """Get an amenity by its ID."""
+        return self.amenity_repository.get(amenity_id)
 
     def add_place(self, place_details):
         """Add a new place to the repository."""
