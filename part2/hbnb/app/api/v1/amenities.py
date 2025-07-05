@@ -83,5 +83,29 @@ class AmenityResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, amenity_id):
         """Update an amenity's information"""
-        pass
+        amenity_data = api.payload
+        
+        # Check if amenity exists
+        existing_amenity = facade.get_amenity(amenity_id)
+        if not existing_amenity:
+            return {'error': 'Amenity not found'}, 404
+        
+        # Input validation
+        if not amenity_data or 'name' not in amenity_data:
+            return {'error': 'Missing required field: name'}, 400
+        
+        if not amenity_data['name'].strip():
+            return {'error': 'Name cannot be empty'}, 400
+        
+        try:
+            # Update amenity through facade
+            updated_amenity = facade.update_amenity(amenity_id, amenity_data)
+            return {
+                'id': updated_amenity.id,
+                'name': updated_amenity.name,
+                'created_at': updated_amenity.created_at.isoformat(),
+                'updated_at': updated_amenity.updated_at.isoformat()
+            }, 200
+        except Exception as e:
+            return {'error': str(e)}, 500
 

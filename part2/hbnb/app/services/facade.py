@@ -70,6 +70,20 @@ class RentalServiceFacade:
     def get_amenity(self, amenity_id):
         """Get an amenity by its ID."""
         return self.amenity_repository.get(amenity_id)
+    
+    def update_amenity(self, amenity_id, updated_info):
+        """Update an existing amenity's details."""
+        amenity = self.amenity_repository.get(amenity_id)
+        if not amenity:
+            return None
+        
+        # Update amenity attributes
+        if 'name' in updated_info:
+            amenity.name = updated_info['name']
+        
+        # Update in repository
+        self.amenity_repository.update(amenity_id, updated_info)
+        return amenity
 
     def add_place(self, place_details):
         """Add a new place to the repository."""

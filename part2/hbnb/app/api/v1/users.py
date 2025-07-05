@@ -19,7 +19,7 @@ user_input_model = api.model('UserInput', {
     'first_name': fields.String(required=True, description='First name'),
     'last_name': fields.String(required=True, description='Last name'),
     'email': fields.String(required=True, description='Email address'),
-    'password': fields.String(required=True, description='Password')
+    'password': fields.String(required=False, description='Password')
 })
 
 # Initialize facade instance
@@ -46,9 +46,6 @@ class UserList(Resource):
         if not data.get('email'):
             api.abort(400, 'Email is required')
         
-        if not data.get('password'):
-            api.abort(400, 'Password is required')
-        
         # Check if email already exists
         existing_user = facade.get_user_by_email(data['email'])
         if existing_user:
@@ -60,7 +57,7 @@ class UserList(Resource):
                 first_name=data['first_name'],
                 last_name=data['last_name'],
                 email=data['email'],
-                password=data['password']
+                password=data.get('password', 'default_password')
             )
             return user.to_dict(), 201
         except ValueError as e:
@@ -89,15 +86,18 @@ class UserResource(Resource):
         if not existing_user:
             api.abort(404, 'User not found')
         
-        # Input validation
-        if not data.get('first_name') or not data.get('last_name'):
-            api.abort(400, 'First name and last name are required')
+        # Only validate fields that are being updated
+        if 'first_name' in data and not data.get('first_name'):
+            api.abort(400, 'First name cannot be empty')
         
-        if not data.get('email'):
-            api.abort(400, 'Email is required')
+        if 'last_name' in data and not data.get('last_name'):
+            api.abort(400, 'Last name cannot be empty')
+        
+        if 'email' in data and not data.get('email'):
+            api.abort(400, 'Email cannot be empty')
         
         # Check if email is being changed and already exists
-        if data['email'] != existing_user.email:
+        if 'email' in data and data['email'] != existing_user.email:
             user_with_email = facade.get_user_by_email(data['email'])
             if user_with_email:
                 api.abort(400, 'User with this email already exists')
