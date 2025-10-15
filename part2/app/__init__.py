@@ -1,20 +1,22 @@
 from flask import Flask
 from flask_restx import Api
+from app.api.user_endpoints import api as user_ns  # ⬅️ Import your user routes
+
 
 def create_app():
-    """Factory function for Flask app"""
+    """App factory for the HBnB Flask application."""
     app = Flask(__name__)
 
-    # Initialize Flask-RESTx API
+    # Create the main API object
     api = Api(
         app,
         version="1.0",
         title="HBnB API",
-        description="HBnB Business Logic & API Endpoints",
+        description="HBnB Part 2 REST API"
     )
 
-    # Register namespaces later (e.g., from app.api.users)
-    # from app.api.users import ns as users_ns
-    # api.add_namespace(users_ns)
+    # Register the user namespace (group of routes)
+    # This means all user routes will be under /api/v1/users
+    api.add_namespace(user_ns, path="/api/v1/users")
 
     return app
