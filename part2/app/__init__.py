@@ -1,10 +1,15 @@
 from flask import Flask
+from flask_restx import Api
 from app.api.user_endpoints import api as user_ns
 
 def create_app():
     app = Flask(__name__)
 
-    # Register API namespaces
-    app.register_blueprint(user_ns, url_prefix="/api/v1")
+    # create the main API object
+    api = Api(app, version="1.0", title="HBnB API",
+              description="HBnB RESTful API")
+
+    # register namespaces (not blueprints)
+    api.add_namespace(user_ns, path="/api/v1/users")
 
     return app
