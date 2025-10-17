@@ -2,14 +2,13 @@ from flask_restx import Namespace, Resource, fields
 from app.business.facade import HBnBFacade
 
 api = Namespace("amenities", description="Amenity operations")
+facade = HBnBFacade()
 
 # Amenity model for documentation and validation
 amenity_model = api.model("Amenity", {
     "id": fields.String(readonly=True, description="Amenity ID"),
     "name": fields.String(required=True, description="Amenity name")
 })
-
-facade = HBnBFacade()
 
 @api.route("/")
 class AmenityList(Resource):
@@ -22,8 +21,10 @@ class AmenityList(Resource):
     @api.marshal_with(amenity_model, code=201)
     def post(self):
         """Create a new amenity"""
-        return facade.create_amenity(api.payload), 201
-
+        try:
+            return facade.create_amenity(api.payload), 201
+        except ValueError as e:
+            api.abort(400, str(e))
 
 @api.route("/<string:amenity_id>")
 @api.response(404, "Amenity not found")
