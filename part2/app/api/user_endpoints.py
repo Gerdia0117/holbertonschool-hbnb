@@ -12,21 +12,25 @@ user_model = api.model("User", {
     "email": fields.String(required=True, description="Email address")
 })
 
+
 @api.route("/")
 class UserList(Resource):
     @api.marshal_list_with(user_model)
     def get(self):
         """List all users"""
-        return facade.get_all_users()
+        users = facade.get_all_users()
+        return [u.to_dict() for u in users]
 
     @api.expect(user_model)
     @api.marshal_with(user_model, code=201)
     def post(self):
         """Create a new user"""
         try:
-            return facade.create_user(api.payload), 201
+            user = facade.create_user(api.payload)
+            return user.to_dict(), 201
         except ValueError as e:
             api.abort(400, str(e))
+
 
 @api.route("/<string:user_id>")
 @api.response(404, "User not found")
@@ -37,7 +41,7 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             api.abort(404, "User not found")
-        return user
+        return user.to_dict()
 
     @api.expect(user_model)
     @api.marshal_with(user_model)
@@ -46,4 +50,4 @@ class UserResource(Resource):
         user = facade.update_user(user_id, api.payload)
         if not user:
             api.abort(404, "User not found")
-        return user
+        return user.to_dict()
