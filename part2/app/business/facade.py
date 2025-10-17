@@ -4,6 +4,7 @@ from app.models.place import Place
 from app.models.user import User
 from app.models.review import Review
 
+
 class HBnBFacade:
     """High-level interface for business logic."""
 
@@ -36,14 +37,14 @@ class HBnBFacade:
         return self.repo.get("User", user_id)
 
     def get_all_users(self):
-        return self.repo.all("User")
+        return [u.to_dict() for u in self.repo.all("User")]
 
     def update_user(self, user_id, data):
         user = self.repo.get("User", user_id)
         if not user:
             return None
         for key, value in data.items():
-            if hasattr(user, key) and key != "password":
+            if hasattr(user, key) and key != "id":
                 setattr(user, key, value)
         self.repo.save(user)
         return user
@@ -61,7 +62,7 @@ class HBnBFacade:
         return self.repo.get("Amenity", amenity_id)
 
     def get_all_amenities(self):
-        return self.repo.all("Amenity")
+        return [a.to_dict() for a in self.repo.all("Amenity")]
 
     def update_amenity(self, amenity_id, data):
         amenity = self.repo.get("Amenity", amenity_id)
@@ -100,14 +101,14 @@ class HBnBFacade:
         return self.repo.get("Place", place_id)
 
     def get_all_places(self):
-        return self.repo.all("Place")
+        return [p.to_dict() for p in self.repo.all("Place")]
 
     def update_place(self, place_id, data):
         place = self.repo.get("Place", place_id)
         if not place:
             return None
         for key, value in data.items():
-            if hasattr(place, key):
+            if hasattr(place, key) and key != "id":
                 setattr(place, key, value)
         self.repo.save(place)
         return place
@@ -134,7 +135,7 @@ class HBnBFacade:
         return self.repo.get("Review", review_id)
 
     def get_all_reviews(self):
-        return self.repo.all("Review")
+        return [r.to_dict() for r in self.repo.all("Review")]
 
     def update_review(self, review_id, data):
         review = self.repo.get("Review", review_id)
@@ -150,6 +151,6 @@ class HBnBFacade:
 
     def get_reviews_by_place(self, place_id):
         return [
-            r for r in self.repo.all("Review")
+            r.to_dict() for r in self.repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
