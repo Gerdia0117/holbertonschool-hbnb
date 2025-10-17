@@ -2,7 +2,7 @@ from app.persistence.memory_repository import InMemoryRepository
 from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.user import User
-from app.models.review import Review  # <-- add this import
+from app.models.review import Review
 
 class HBnBFacade:
     """High-level interface for business logic."""
@@ -24,6 +24,53 @@ class HBnBFacade:
 
     def delete(self, obj_type, obj_id):
         return self.repo.delete(obj_type, obj_id)
+
+    # -------------------------------
+    # User-specific methods
+    # -------------------------------
+    def create_user(self, data):
+        user = User(**data)
+        return self.repo.save(user)
+
+    def get_user(self, user_id):
+        return self.repo.get("User", user_id)
+
+    def get_all_users(self):
+        return self.repo.all("User")
+
+    def update_user(self, user_id, data):
+        user = self.repo.get("User", user_id)
+        if not user:
+            return None
+        for key, value in data.items():
+            if hasattr(user, key) and key != "password":
+                setattr(user, key, value)
+        self.repo.save(user)
+        return user
+
+    # -------------------------------
+    # Amenity-specific methods
+    # -------------------------------
+    def create_amenity(self, data):
+        if "name" not in data or not data["name"]:
+            raise ValueError("Amenity name is required.")
+        amenity = Amenity(**data)
+        return self.repo.save(amenity)
+
+    def get_amenity(self, amenity_id):
+        return self.repo.get("Amenity", amenity_id)
+
+    def get_all_amenities(self):
+        return self.repo.all("Amenity")
+
+    def update_amenity(self, amenity_id, data):
+        amenity = self.repo.get("Amenity", amenity_id)
+        if not amenity:
+            return None
+        if "name" in data:
+            amenity.name = data["name"]
+        self.repo.save(amenity)
+        return amenity
 
     # -------------------------------
     # Place-specific methods
@@ -69,7 +116,6 @@ class HBnBFacade:
     # Review-specific methods
     # -------------------------------
     def create_review(self, data):
-        """Create a new Review linked to a User and Place."""
         user_id = data.get("user_id")
         place_id = data.get("place_id")
         text = data.get("text", "")
@@ -103,7 +149,6 @@ class HBnBFacade:
         return self.repo.delete("Review", review_id)
 
     def get_reviews_by_place(self, place_id):
-        """Get all reviews for a specific place."""
         return [
             r for r in self.repo.all("Review")
             if getattr(r, "place_id", None) == place_id
