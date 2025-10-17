@@ -4,7 +4,6 @@ from app.models.place import Place
 from app.models.user import User
 from app.models.review import Review
 
-
 class HBnBFacade:
     """High-level interface for business logic."""
 
@@ -30,6 +29,8 @@ class HBnBFacade:
     # User-specific methods
     # -------------------------------
     def create_user(self, data):
+        if "first_name" not in data or "last_name" not in data or "email" not in data:
+            raise ValueError("Missing required user fields.")
         user = User(**data)
         return self.repo.save(user)
 
@@ -37,14 +38,14 @@ class HBnBFacade:
         return self.repo.get("User", user_id)
 
     def get_all_users(self):
-        return [u.to_dict() for u in self.repo.all("User")]
+        return self.repo.all("User")
 
     def update_user(self, user_id, data):
         user = self.repo.get("User", user_id)
         if not user:
             return None
         for key, value in data.items():
-            if hasattr(user, key) and key != "id":
+            if hasattr(user, key):
                 setattr(user, key, value)
         self.repo.save(user)
         return user
@@ -62,7 +63,7 @@ class HBnBFacade:
         return self.repo.get("Amenity", amenity_id)
 
     def get_all_amenities(self):
-        return [a.to_dict() for a in self.repo.all("Amenity")]
+        return self.repo.all("Amenity")
 
     def update_amenity(self, amenity_id, data):
         amenity = self.repo.get("Amenity", amenity_id)
@@ -77,23 +78,15 @@ class HBnBFacade:
     # Place-specific methods
     # -------------------------------
     def create_place(self, data):
-        owner_id = data.get("owner_id")
-        name = data.get("name")
-        price = data.get("price", 0)
-        latitude = data.get("latitude")
-        longitude = data.get("longitude")
-
-        if not name:
+        if "name" not in data or not data["name"]:
             raise ValueError("Place name is required.")
-        if owner_id and not self.repo.get("User", owner_id):
-            raise ValueError("Invalid owner ID.")
-        if not isinstance(price, (int, float)) or price < 0:
-            raise ValueError("Price must be a non-negative number.")
-        if latitude and not (-90 <= latitude <= 90):
-            raise ValueError("Latitude must be between -90 and 90.")
-        if longitude and not (-180 <= longitude <= 180):
-            raise ValueError("Longitude must be between -180 and 180.")
-
+        if "owner_id" not in data or not self.repo.get("User", data["owner_id"]):
+            raise ValueError("Valid owner_id is required.")
+        # Set default optional fields
+        data.setdefault("description", "")
+        data.setdefault("price", 0)
+        data.setdefault("latitude", None)
+        data.setdefault("longitude", None)
         place = Place(**data)
         return self.repo.save(place)
 
@@ -101,14 +94,14 @@ class HBnBFacade:
         return self.repo.get("Place", place_id)
 
     def get_all_places(self):
-        return [p.to_dict() for p in self.repo.all("Place")]
+        return self.repo.all("Place")
 
     def update_place(self, place_id, data):
         place = self.repo.get("Place", place_id)
         if not place:
             return None
         for key, value in data.items():
-            if hasattr(place, key) and key != "id":
+            if hasattr(place, key):
                 setattr(place, key, value)
         self.repo.save(place)
         return place
@@ -117,17 +110,12 @@ class HBnBFacade:
     # Review-specific methods
     # -------------------------------
     def create_review(self, data):
-        user_id = data.get("user_id")
-        place_id = data.get("place_id")
-        text = data.get("text", "")
-
-        if not user_id or not self.repo.get("User", user_id):
-            raise ValueError("Invalid user ID.")
-        if not place_id or not self.repo.get("Place", place_id):
-            raise ValueError("Invalid place ID.")
-        if not text:
+        if "user_id" not in data or not self.repo.get("User", data["user_id"]):
+            raise ValueError("Valid user_id is required.")
+        if "place_id" not in data or not self.repo.get("Place", data["place_id"]):
+            raise ValueError("Valid place_id is required.")
+        if "text" not in data or not data["text"]:
             raise ValueError("Review text is required.")
-
         review = Review(**data)
         return self.repo.save(review)
 
@@ -135,7 +123,7 @@ class HBnBFacade:
         return self.repo.get("Review", review_id)
 
     def get_all_reviews(self):
-        return [r.to_dict() for r in self.repo.all("Review")]
+        return self.repo.all("Review")
 
     def update_review(self, review_id, data):
         review = self.repo.get("Review", review_id)
@@ -151,6 +139,6 @@ class HBnBFacade:
 
     def get_reviews_by_place(self, place_id):
         return [
-            r.to_dict() for r in self.repo.all("Review")
+            r for r in self.repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
