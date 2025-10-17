@@ -4,7 +4,6 @@ from app.business.facade import HBnBFacade
 api = Namespace("users", description="User related operations")
 facade = HBnBFacade()
 
-# User model for documentation + validation
 user_model = api.model("User", {
     "id": fields.String(readonly=True, description="User ID"),
     "first_name": fields.String(required=True, description="First name"),
@@ -18,16 +17,14 @@ class UserList(Resource):
     @api.marshal_list_with(user_model)
     def get(self):
         """List all users"""
-        users = facade.get_all_users()
-        return [u.to_dict() for u in users]
+        return facade.get_all_users()
 
     @api.expect(user_model)
     @api.marshal_with(user_model, code=201)
     def post(self):
         """Create a new user"""
         try:
-            user = facade.create_user(api.payload)
-            return user.to_dict(), 201
+            return facade.create_user(api.payload), 201
         except ValueError as e:
             api.abort(400, str(e))
 
@@ -41,7 +38,7 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             api.abort(404, "User not found")
-        return user.to_dict()
+        return user
 
     @api.expect(user_model)
     @api.marshal_with(user_model)
@@ -50,4 +47,4 @@ class UserResource(Resource):
         user = facade.update_user(user_id, api.payload)
         if not user:
             api.abort(404, "User not found")
-        return user.to_dict()
+        return user
