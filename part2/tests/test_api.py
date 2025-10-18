@@ -110,13 +110,13 @@ class TestHBnBAPI(unittest.TestCase):
         self.assertIn("id", data)
         TestHBnBAPI.review_id = data["id"]
 
-    def test_10_get_reviews_by_place(self):
+    def test_a10_get_reviews_by_place(self):
         res = self.client.get(f"/api/v1/reviews/place/{TestHBnBAPI.place_id}")
         self.assertEqual(res.status_code, 200)
         data = json.loads(res.data)
         self.assertTrue(any(r["id"] == TestHBnBAPI.review_id for r in data))
 
-    def test_11_delete_review(self):
+    def test_a11_delete_review(self):
         res = self.client.delete(f"/api/v1/reviews/{TestHBnBAPI.review_id}")
         self.assertEqual(res.status_code, 200)
         # Confirm deletion

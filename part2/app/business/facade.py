@@ -7,9 +7,19 @@ from app.models.review import Review
 
 class HBnBFacade:
     """High-level interface for HBnB business logic."""
+    
+    _instance = None
+    _repo = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._repo = InMemoryRepository()
+        return cls._instance
 
     def __init__(self):
-        self.repo = InMemoryRepository()
+        if not hasattr(self, 'repo'):
+            self.repo = self._repo
 
     # -------------------------------
     # User methods
