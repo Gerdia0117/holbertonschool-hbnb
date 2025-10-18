@@ -6,7 +6,7 @@ from app.models.review import Review
 
 
 class HBnBFacade:
-    """High-level interface for business logic."""
+    """High-level interface for HBnB business logic."""
 
     def __init__(self):
         self.repo = InMemoryRepository()
@@ -15,11 +15,20 @@ class HBnBFacade:
     # User methods
     # -------------------------------
     def create_user(self, data):
-        required = ["first_name", "last_name", "email"]
-        for field in required:
-            if field not in data or not data[field]:
-                raise ValueError(f"{field} is required")
-        user = User(**data)
+        first_name = data.get("first_name", "")
+        last_name = data.get("last_name", "")
+        email = data.get("email")
+        password = data.get("password", "")
+
+        if not email:
+            raise ValueError("Email is required")
+
+        user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password
+        )
         return self.repo.save(user)
 
     def get_user(self, user_id):
@@ -38,12 +47,15 @@ class HBnBFacade:
         self.repo.save(user)
         return user
 
+    def delete_user(self, user_id):
+        return self.repo.delete("User", user_id)
+
     # -------------------------------
     # Amenity methods
     # -------------------------------
     def create_amenity(self, data):
-        if "name" not in data or not data["name"]:
-            raise ValueError("Amenity name is required.")
+        if not data.get("name"):
+            raise ValueError("Amenity name is required")
         amenity = Amenity(**data)
         return self.repo.save(amenity)
 
@@ -62,18 +74,24 @@ class HBnBFacade:
         self.repo.save(amenity)
         return amenity
 
+    def delete_amenity(self, amenity_id):
+        return self.repo.delete("Amenity", amenity_id)
+
     # -------------------------------
     # Place methods
     # -------------------------------
     def create_place(self, data):
-        if "name" not in data or not data["name"]:
+        if not data.get("name"):
             raise ValueError("Place name is required")
+
         owner_id = data.get("owner_id")
         if not owner_id or not self.repo.get("User", owner_id):
             raise ValueError("Valid owner_id is required")
+
         data.setdefault("price", 0)
         data.setdefault("latitude", 0.0)
         data.setdefault("longitude", 0.0)
+
         place = Place(**data)
         return self.repo.save(place)
 
@@ -93,16 +111,24 @@ class HBnBFacade:
         self.repo.save(place)
         return place
 
+    def delete_place(self, place_id):
+        return self.repo.delete("Place", place_id)
+
     # -------------------------------
     # Review methods
     # -------------------------------
     def create_review(self, data):
-        if "user_id" not in data or not self.repo.get("User", data["user_id"]):
+        user_id = data.get("user_id")
+        place_id = data.get("place_id")
+        text = data.get("text")
+
+        if not user_id or not self.repo.get("User", user_id):
             raise ValueError("Valid user_id is required")
-        if "place_id" not in data or not self.repo.get("Place", data["place_id"]):
+        if not place_id or not self.repo.get("Place", place_id):
             raise ValueError("Valid place_id is required")
-        if "text" not in data or not data["text"]:
+        if not text:
             raise ValueError("Review text is required")
+
         review = Review(**data)
         return self.repo.save(review)
 
@@ -129,4 +155,3 @@ class HBnBFacade:
             r for r in self.repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
-
