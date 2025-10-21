@@ -6,7 +6,7 @@ from app.models.review import Review
 
 
 class HBnBFacade:
-    """High-level interface for HBnB business logic."""
+    
     
     _instance = None
     _repo = None
