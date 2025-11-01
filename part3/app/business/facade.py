@@ -9,18 +9,27 @@ class HBnBFacade:
     
     
     _instance = None
-    _repo = None
+    _user_repo = None
+    _place_repo = None
+    _review_repo = None
+    _amenity_repo = None
     
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            # Use repository factory to get the appropriate repository
-            cls._repo = get_repository()
+            # Use repository factory to get appropriate repositories
+            cls._user_repo = get_repository('user')
+            cls._place_repo = get_repository('place')
+            cls._review_repo = get_repository('review')
+            cls._amenity_repo = get_repository('amenity')
         return cls._instance
 
     def __init__(self):
-        if not hasattr(self, 'repo'):
-            self.repo = self._repo
+        if not hasattr(self, 'user_repo'):
+            self.user_repo = self._user_repo
+            self.place_repo = self._place_repo
+            self.review_repo = self._review_repo
+            self.amenity_repo = self._amenity_repo
 
     # -------------------------------
     # User methods
@@ -49,28 +58,28 @@ class HBnBFacade:
         )
         # Hash the password before saving
         user.hash_password(password)
-        return self.repo.save(user)
+        return self.user_repo.save(user)
 
     def get_user(self, user_id):
-        return self.repo.get("User", user_id)
+        return self.user_repo.get("User", user_id)
 
     def get_all_users(self):
-        return self.repo.all("User")
+        return self.user_repo.all("User")
     
     def get_user_by_email(self, email):
         """Get a user by email address."""
         # Use repository's get_by_email method if available (SQLAlchemy)
-        if hasattr(self.repo, 'get_by_email'):
-            return self.repo.get_by_email(email)
+        if hasattr(self.user_repo, 'get_by_email'):
+            return self.user_repo.get_by_email(email)
         # Fallback for InMemoryRepository
-        users = self.repo.all("User")
+        users = self.user_repo.all("User")
         for user in users:
             if user.email == email:
                 return user
         return None
 
     def update_user(self, user_id, data):
-        user = self.repo.get("User", user_id)
+        user = self.user_repo.get("User", user_id)
         if not user:
             return None
         
@@ -87,11 +96,11 @@ class HBnBFacade:
         for key, value in data.items():
             if hasattr(user, key) and key != 'password':
                 setattr(user, key, value)
-        self.repo.save(user)
+        self.user_repo.save(user)
         return user
 
     def delete_user(self, user_id):
-        return self.repo.delete("User", user_id)
+        return self.user_repo.delete("User", user_id)
 
     # -------------------------------
     # Amenity methods
@@ -100,25 +109,25 @@ class HBnBFacade:
         if not data.get("name"):
             raise ValueError("Amenity name is required")
         amenity = Amenity(**data)
-        return self.repo.save(amenity)
+        return self.user_repo.save(amenity)
 
     def get_amenity(self, amenity_id):
-        return self.repo.get("Amenity", amenity_id)
+        return self.user_repo.get("Amenity", amenity_id)
 
     def get_all_amenities(self):
-        return self.repo.all("Amenity")
+        return self.user_repo.all("Amenity")
 
     def update_amenity(self, amenity_id, data):
-        amenity = self.repo.get("Amenity", amenity_id)
+        amenity = self.user_repo.get("Amenity", amenity_id)
         if not amenity:
             return None
         if "name" in data:
             amenity.name = data["name"]
-        self.repo.save(amenity)
+        self.user_repo.save(amenity)
         return amenity
 
     def delete_amenity(self, amenity_id):
-        return self.repo.delete("Amenity", amenity_id)
+        return self.user_repo.delete("Amenity", amenity_id)
 
     # -------------------------------
     # Place methods
@@ -128,7 +137,7 @@ class HBnBFacade:
             raise ValueError("Place name is required")
 
         owner_id = data.get("owner_id")
-        if not owner_id or not self.repo.get("User", owner_id):
+        if not owner_id or not self.user_repo.get("User", owner_id):
             raise ValueError("Valid owner_id is required")
 
         data.setdefault("price", 0)
@@ -136,26 +145,26 @@ class HBnBFacade:
         data.setdefault("longitude", 0.0)
 
         place = Place(**data)
-        return self.repo.save(place)
+        return self.user_repo.save(place)
 
     def get_place(self, place_id):
-        return self.repo.get("Place", place_id)
+        return self.user_repo.get("Place", place_id)
 
     def get_all_places(self):
-        return self.repo.all("Place")
+        return self.user_repo.all("Place")
 
     def update_place(self, place_id, data):
-        place = self.repo.get("Place", place_id)
+        place = self.user_repo.get("Place", place_id)
         if not place:
             return None
         for key, value in data.items():
             if hasattr(place, key):
                 setattr(place, key, value)
-        self.repo.save(place)
+        self.user_repo.save(place)
         return place
 
     def delete_place(self, place_id):
-        return self.repo.delete("Place", place_id)
+        return self.user_repo.delete("Place", place_id)
 
     # -------------------------------
     # Review methods
@@ -165,9 +174,9 @@ class HBnBFacade:
         place_id = data.get("place_id")
         text = data.get("text")
 
-        if not user_id or not self.repo.get("User", user_id):
+        if not user_id or not self.user_repo.get("User", user_id):
             raise ValueError("Valid user_id is required")
-        if not place_id or not self.repo.get("Place", place_id):
+        if not place_id or not self.user_repo.get("Place", place_id):
             raise ValueError("Valid place_id is required")
         if not text:
             raise ValueError("Review text is required")
@@ -181,29 +190,29 @@ class HBnBFacade:
             raise ValueError("You have already reviewed this place")
 
         review = Review(**data)
-        return self.repo.save(review)
+        return self.user_repo.save(review)
 
     def get_review(self, review_id):
-        return self.repo.get("Review", review_id)
+        return self.user_repo.get("Review", review_id)
 
     def get_all_reviews(self):
-        return self.repo.all("Review")
+        return self.user_repo.all("Review")
 
     def update_review(self, review_id, data):
-        review = self.repo.get("Review", review_id)
+        review = self.user_repo.get("Review", review_id)
         if not review:
             return None
         if "text" in data:
             review.text = data["text"]
-        self.repo.save(review)
+        self.user_repo.save(review)
         return review
 
     def delete_review(self, review_id):
-        return self.repo.delete("Review", review_id)
+        return self.user_repo.delete("Review", review_id)
 
     def get_reviews_by_place(self, place_id):
         return [
-            r for r in self.repo.all("Review")
+            r for r in self.user_repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
     
@@ -212,17 +221,17 @@ class HBnBFacade:
     # -------------------------------
     def is_place_owner(self, place_id, user_id):
         """Check if a user owns a specific place."""
-        place = self.repo.get("Place", place_id)
+        place = self.user_repo.get("Place", place_id)
         return place and getattr(place, 'owner_id', None) == user_id
     
     def is_review_author(self, review_id, user_id):
         """Check if a user is the author of a specific review."""
-        review = self.repo.get("Review", review_id)
+        review = self.user_repo.get("Review", review_id)
         return review and getattr(review, 'user_id', None) == user_id
     
     def has_user_reviewed_place(self, user_id, place_id):
         """Check if a user has already reviewed a specific place."""
-        reviews = self.repo.all("Review")
+        reviews = self.user_repo.all("Review")
         for review in reviews:
             if (getattr(review, 'user_id', None) == user_id and 
                 getattr(review, 'place_id', None) == place_id):

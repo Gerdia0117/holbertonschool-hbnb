@@ -4,6 +4,9 @@ Repository factory for creating appropriate repository instances.
 import os
 from app.persistence.memory_repository import InMemoryRepository
 from app.persistence.user_repository import UserRepository
+from app.persistence.place_repository import PlaceRepository
+from app.persistence.review_repository import ReviewRepository
+from app.persistence.amenity_repository import AmenityRepository
 
 
 def get_repository(repository_type='user', use_database=None):
@@ -28,8 +31,13 @@ def get_repository(repository_type='user', use_database=None):
         # Return appropriate SQLAlchemy repository based on type
         if repository_type == 'user':
             return UserRepository()
-        # Add other repository types here as they're implemented
-        # For now, return InMemoryRepository for non-user types
+        elif repository_type == 'place':
+            return PlaceRepository()
+        elif repository_type == 'review':
+            return ReviewRepository()
+        elif repository_type == 'amenity':
+            return AmenityRepository()
+        # Fallback to InMemoryRepository for unknown types
         return InMemoryRepository()
     else:
         # Return in-memory repository

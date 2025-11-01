@@ -5,7 +5,11 @@ Creates all database tables based on SQLAlchemy models.
 """
 from app import create_app
 from app.extensions import db
-from app.models.user import User  # Import models to ensure they're registered
+# Import all models to ensure they're registered
+from app.models.user import User
+from app.models.place import Place
+from app.models.review import Review
+from app.models.amenity import Amenity
 
 def init_database():
     """Initialize the database and create all tables."""
