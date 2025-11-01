@@ -13,6 +13,10 @@ class Config:
     # JWT Configuration
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or SECRET_KEY
     JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 hour in seconds
+    
+    # SQLAlchemy Configuration
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///hbnb_dev.db'
 
 
 class DevelopmentConfig(Config):
@@ -23,6 +27,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testing environment configuration."""
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # In-memory database for tests
 
 
 class ProductionConfig(Config):

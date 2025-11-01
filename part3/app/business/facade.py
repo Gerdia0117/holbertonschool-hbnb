@@ -1,4 +1,4 @@
-from app.persistence.memory_repository import InMemoryRepository
+from app.persistence.repository_factory import get_repository
 from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.user import User
@@ -14,7 +14,8 @@ class HBnBFacade:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._repo = InMemoryRepository()
+            # Use repository factory to get the appropriate repository
+            cls._repo = get_repository()
         return cls._instance
 
     def __init__(self):
