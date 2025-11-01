@@ -59,6 +59,10 @@ class HBnBFacade:
     
     def get_user_by_email(self, email):
         """Get a user by email address."""
+        # Use repository's get_by_email method if available (SQLAlchemy)
+        if hasattr(self.repo, 'get_by_email'):
+            return self.repo.get_by_email(email)
+        # Fallback for InMemoryRepository
         users = self.repo.all("User")
         for user in users:
             if user.email == email:

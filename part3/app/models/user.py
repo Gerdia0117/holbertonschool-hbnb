@@ -1,17 +1,17 @@
 from .base_model import BaseModel
-from app.extensions import bcrypt
+from app.extensions import bcrypt, db
 
 
 class User(BaseModel):
     """Represents a user in the HBnB application."""
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.first_name = kwargs.get("first_name", "")
-        self.last_name = kwargs.get("last_name", "")
-        self.email = kwargs.get("email", "")
-        self.password = kwargs.get("password", "")
-        self.is_admin = kwargs.get("is_admin", False)
+    
+    __tablename__ = 'users'
+    
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(255), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
 
     def hash_password(self, password):
         """Hash the password before storing it."""

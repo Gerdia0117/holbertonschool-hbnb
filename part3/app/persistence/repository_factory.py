@@ -3,35 +3,34 @@ Repository factory for creating appropriate repository instances.
 """
 import os
 from app.persistence.memory_repository import InMemoryRepository
-from app.persistence.sqlalchemy_repository import SQLAlchemyRepository
+from app.persistence.user_repository import UserRepository
 
 
-def get_repository(use_database=None):
+def get_repository(repository_type='user', use_database=None):
     """
     Factory function to get the appropriate repository.
     
     Args:
+        repository_type: Type of repository ('user', 'place', etc.)
         use_database: Boolean to determine repository type.
                      If None, checks USE_DATABASE environment variable.
-                     If True, returns SQLAlchemyRepository.
+                     If True, returns SQLAlchemy-based repository.
                      If False, returns InMemoryRepository.
     
     Returns:
-        Repository instance (InMemoryRepository or SQLAlchemyRepository)
-        
-    Note: For now, this returns InMemoryRepository by default.
-          Once models are mapped to SQLAlchemy in the next task,
-          the default can be changed to use the database.
+        Repository instance
     """
     if use_database is None:
-        # Check environment variable
-        use_database = os.environ.get('USE_DATABASE', 'False').lower() == 'true'
+        # Check environment variable - now defaults to True for database
+        use_database = os.environ.get('USE_DATABASE', 'True').lower() == 'true'
     
     if use_database:
-        # Return SQLAlchemy repository
-        # Note: This will need model classes once they're mapped
-        # For now, it's here as a placeholder for the next task
-        return SQLAlchemyRepository
+        # Return appropriate SQLAlchemy repository based on type
+        if repository_type == 'user':
+            return UserRepository()
+        # Add other repository types here as they're implemented
+        # For now, return InMemoryRepository for non-user types
+        return InMemoryRepository()
     else:
-        # Return in-memory repository (default for now)
+        # Return in-memory repository
         return InMemoryRepository()

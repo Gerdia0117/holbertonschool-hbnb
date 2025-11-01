@@ -3,14 +3,17 @@ Base model defining shared attributes and methods.
 """
 from datetime import datetime, timezone
 import uuid
+from app.extensions import db
 
-class BaseModel:
+
+class BaseModel(db.Model):
     """Common base model for all entities."""
-
-    def __init__(self, **kwargs):
-        self.id = kwargs.get("id", str(uuid.uuid4()))
-        self.created_at = kwargs.get("created_at", datetime.now(timezone.utc))
-        self.updated_at = kwargs.get("updated_at", datetime.now(timezone.utc))
+    
+    __abstract__ = True  # This makes it an abstract base class
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
         """Convert instance to dictionary."""
