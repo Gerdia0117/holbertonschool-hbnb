@@ -149,6 +149,14 @@ class HBnBFacade:
             raise ValueError("Valid place_id is required")
         if not text:
             raise ValueError("Review text is required")
+        
+        # Prevent users from reviewing their own places
+        if self.is_place_owner(place_id, user_id):
+            raise ValueError("You cannot review your own place")
+        
+        # Prevent duplicate reviews
+        if self.has_user_reviewed_place(user_id, place_id):
+            raise ValueError("You have already reviewed this place")
 
         review = Review(**data)
         return self.repo.save(review)
@@ -176,3 +184,25 @@ class HBnBFacade:
             r for r in self.repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
+    
+    # -------------------------------
+    # Authorization helper methods
+    # -------------------------------
+    def is_place_owner(self, place_id, user_id):
+        """Check if a user owns a specific place."""
+        place = self.repo.get("Place", place_id)
+        return place and getattr(place, 'owner_id', None) == user_id
+    
+    def is_review_author(self, review_id, user_id):
+        """Check if a user is the author of a specific review."""
+        review = self.repo.get("Review", review_id)
+        return review and getattr(review, 'user_id', None) == user_id
+    
+    def has_user_reviewed_place(self, user_id, place_id):
+        """Check if a user has already reviewed a specific place."""
+        reviews = self.repo.all("Review")
+        for review in reviews:
+            if (getattr(review, 'user_id', None) == user_id and 
+                getattr(review, 'place_id', None) == place_id):
+                return True
+        return False

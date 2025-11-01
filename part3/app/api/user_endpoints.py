@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.business.facade import HBnBFacade
 
 api = Namespace("users", description="User related operations")
@@ -51,9 +52,25 @@ class UserResource(Resource):
 
     @api.expect(user_model)
     @api.marshal_with(user_model)
+    @jwt_required()
     def put(self, user_id):
-        """Update an existing user"""
-        user = facade.update_user(user_id, api.payload)
+        """Update user details (requires authentication)"""
+        current_user_id = get_jwt_identity()
+        
+        # Users can only update their own information
+        if current_user_id != user_id:
+            api.abort(403, "You can only update your own user information")
+        
+        # Check if user exists
+        user = facade.get_user(user_id)
         if not user:
             api.abort(404, "User not found")
-        return user
+        
+        # Prevent updating email and password through this endpoint
+        update_data = api.payload.copy()
+        update_data.pop('email', None)
+        update_data.pop('password', None)
+        
+        # Update the user
+        updated_user = facade.update_user(user_id, update_data)
+        return updated_user

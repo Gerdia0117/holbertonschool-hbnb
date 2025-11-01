@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.business.facade import HBnBFacade
 
 api = Namespace("places", description="Place operations")
@@ -25,10 +26,15 @@ class PlaceList(Resource):
 
     @api.expect(place_model)
     @api.marshal_with(place_model, code=201)
+    @jwt_required()
     def post(self):
-        """Create a new place"""
+        """Create a new place (requires authentication)"""
+        current_user_id = get_jwt_identity()
+        place_data = api.payload
+        # Set the owner_id to the authenticated user
+        place_data['owner_id'] = current_user_id
         try:
-            return facade.create_place(api.payload), 201
+            return facade.create_place(place_data), 201
         except ValueError as e:
             api.abort(400, str(e))
 
@@ -45,8 +51,20 @@ class PlaceResource(Resource):
 
     @api.expect(place_model)
     @api.marshal_with(place_model)
+    @jwt_required()
     def put(self, place_id):
-        place = facade.update_place(place_id, api.payload)
+        """Update a place (requires authentication and ownership)"""
+        current_user_id = get_jwt_identity()
+        
+        # Check if place exists
+        place = facade.get_place(place_id)
         if not place:
             api.abort(404, "Place not found")
-        return place
+        
+        # Check ownership
+        if not facade.is_place_owner(place_id, current_user_id):
+            api.abort(403, "You do not have permission to update this place")
+        
+        # Update the place
+        updated_place = facade.update_place(place_id, api.payload)
+        return updated_place
