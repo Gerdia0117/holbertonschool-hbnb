@@ -17,9 +17,11 @@ def init_database():
     
     with app.app_context():
         # Drop all tables (use with caution in production!)
-        # db.drop_all()
+        print("Dropping all tables...")
+        db.drop_all()
         
         # Create all tables
+        print("Creating all tables...")
         db.create_all()
         print("Database tables created successfully!")
         

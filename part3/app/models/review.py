@@ -9,8 +9,13 @@ class Review(BaseModel):
     
     text = db.Column(db.String(500), nullable=False)
     rating = db.Column(db.Integer, nullable=False, default=0)
-    user_id = db.Column(db.String(36), nullable=False)  # Foreign key to User (will add relationship later)
-    place_id = db.Column(db.String(36), nullable=False)  # Foreign key to Place (will add relationship later)
+    
+    # Foreign keys
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+    
+    # Relationships (backref already defined in User and Place models)
+    user = db.relationship('User', backref='reviews')
 
     def to_dict(self):
         """Convert review to dictionary."""
