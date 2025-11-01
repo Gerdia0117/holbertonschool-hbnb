@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restx import Api
+from app.extensions import bcrypt
 from app.api.user_endpoints import api as user_ns
 from app.api.amenity_endpoints import api as amenity_ns
 from app.api.place_endpoints import api as place_ns
@@ -20,6 +21,9 @@ def create_app(config_name='default'):
     # Load configuration
     from config import config
     app.config.from_object(config[config_name])
+    
+    # Initialize bcrypt
+    bcrypt.init_app(app)
 
     # create the main API object
     api = Api(app, version="1.0", title="HBnB API",
