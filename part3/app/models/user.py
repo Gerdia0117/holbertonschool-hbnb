@@ -11,6 +11,7 @@ class User(BaseModel):
         self.last_name = kwargs.get("last_name", "")
         self.email = kwargs.get("email", "")
         self.password = kwargs.get("password", "")
+        self.is_admin = kwargs.get("is_admin", False)
 
     def hash_password(self, password):
         """Hash the password before storing it."""
