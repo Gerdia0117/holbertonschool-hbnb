@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.business.facade import HBnBFacade
+from app.utils.auth import is_admin
 
 api = Namespace("places", description="Place operations")
 facade = HBnBFacade()
@@ -53,16 +54,17 @@ class PlaceResource(Resource):
     @api.marshal_with(place_model)
     @jwt_required()
     def put(self, place_id):
-        """Update a place (requires authentication and ownership)"""
+        """Update a place (requires authentication and ownership, or admin)"""
         current_user_id = get_jwt_identity()
+        admin = is_admin()
         
         # Check if place exists
         place = facade.get_place(place_id)
         if not place:
             api.abort(404, "Place not found")
         
-        # Check ownership
-        if not facade.is_place_owner(place_id, current_user_id):
+        # Check ownership (admins can bypass)
+        if not admin and not facade.is_place_owner(place_id, current_user_id):
             api.abort(403, "You do not have permission to update this place")
         
         # Update the place

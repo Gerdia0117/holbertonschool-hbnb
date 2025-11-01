@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.business.facade import HBnBFacade
+from app.utils.auth import admin_required, is_admin
 
 api = Namespace("users", description="User related operations")
 facade = HBnBFacade()
@@ -19,6 +20,15 @@ user_input_model = api.model("UserInput", {
     "last_name": fields.String(required=True, description="Last name"),
     "email": fields.String(required=True, description="Email address"),
     "password": fields.String(required=True, description="Password")
+})
+
+# Model for admin user update - includes all fields
+admin_user_update_model = api.model("AdminUserUpdate", {
+    "first_name": fields.String(description="First name"),
+    "last_name": fields.String(description="Last name"),
+    "email": fields.String(description="Email address"),
+    "password": fields.String(description="Password"),
+    "is_admin": fields.Boolean(description="Admin status")
 })
 
 
@@ -50,27 +60,34 @@ class UserResource(Resource):
             api.abort(404, "User not found")
         return user
 
-    @api.expect(user_model)
+    @api.expect(admin_user_update_model)
     @api.marshal_with(user_model)
     @jwt_required()
     def put(self, user_id):
-        """Update user details (requires authentication)"""
+        """Update user details (requires authentication, admins can update any user)"""
         current_user_id = get_jwt_identity()
-        
-        # Users can only update their own information
-        if current_user_id != user_id:
-            api.abort(403, "You can only update your own user information")
+        admin = is_admin()
         
         # Check if user exists
         user = facade.get_user(user_id)
         if not user:
             api.abort(404, "User not found")
         
-        # Prevent updating email and password through this endpoint
+        # Non-admin users can only update their own information
+        if not admin and current_user_id != user_id:
+            api.abort(403, "You can only update your own user information")
+        
         update_data = api.payload.copy()
-        update_data.pop('email', None)
-        update_data.pop('password', None)
+        
+        # Regular users cannot update email, password, or admin status
+        if not admin:
+            update_data.pop('email', None)
+            update_data.pop('password', None)
+            update_data.pop('is_admin', None)
         
         # Update the user
-        updated_user = facade.update_user(user_id, update_data)
-        return updated_user
+        try:
+            updated_user = facade.update_user(user_id, update_data)
+            return updated_user
+        except ValueError as e:
+            api.abort(400, str(e))

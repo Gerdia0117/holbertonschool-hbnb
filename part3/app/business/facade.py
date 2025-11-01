@@ -29,16 +29,22 @@ class HBnBFacade:
         last_name = data.get("last_name", "")
         email = data.get("email")
         password = data.get("password", "")
+        is_admin = data.get("is_admin", False)
 
         if not email:
             raise ValueError("Email is required")
         if not password:
             raise ValueError("Password is required")
+        
+        # Check if email already exists
+        if self.get_user_by_email(email):
+            raise ValueError("Email already in use")
 
         user = User(
             first_name=first_name,
             last_name=last_name,
-            email=email
+            email=email,
+            is_admin=is_admin
         )
         # Hash the password before saving
         user.hash_password(password)
@@ -62,8 +68,19 @@ class HBnBFacade:
         user = self.repo.get("User", user_id)
         if not user:
             return None
+        
+        # Check if email is being updated and if it's unique
+        if 'email' in data and data['email'] != user.email:
+            if self.get_user_by_email(data['email']):
+                raise ValueError("Email already in use")
+        
+        # Handle password update separately
+        if 'password' in data:
+            user.hash_password(data['password'])
+            data = {k: v for k, v in data.items() if k != 'password'}
+        
         for key, value in data.items():
-            if hasattr(user, key):
+            if hasattr(user, key) and key != 'password':
                 setattr(user, key, value)
         self.repo.save(user)
         return user

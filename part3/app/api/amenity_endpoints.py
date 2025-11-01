@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required
 from app.business.facade import HBnBFacade
+from app.utils.auth import admin_required
 
 api = Namespace("amenities", description="Amenity operations")
 facade = HBnBFacade()
@@ -18,7 +20,10 @@ class AmenityList(Resource):
 
     @api.expect(amenity_model)
     @api.marshal_with(amenity_model, code=201)
+    @jwt_required()
+    @admin_required()
     def post(self):
+        """Create a new amenity (admin only)"""
         try:
             return facade.create_amenity(api.payload), 201
         except ValueError as e:
@@ -37,7 +42,10 @@ class AmenityResource(Resource):
 
     @api.expect(amenity_model)
     @api.marshal_with(amenity_model)
+    @jwt_required()
+    @admin_required()
     def put(self, amenity_id):
+        """Update an amenity (admin only)"""
         amenity = facade.update_amenity(amenity_id, api.payload)
         if not amenity:
             api.abort(404, "Amenity not found")

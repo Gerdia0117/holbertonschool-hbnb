@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.business.facade import HBnBFacade
+from app.utils.auth import is_admin
 
 api = Namespace("reviews", description="Review operations")
 facade = HBnBFacade()
@@ -48,16 +49,17 @@ class ReviewResource(Resource):
     @api.marshal_with(review_model)
     @jwt_required()
     def put(self, review_id):
-        """Update a review (requires authentication and ownership)"""
+        """Update a review (requires authentication and ownership, or admin)"""
         current_user_id = get_jwt_identity()
+        admin = is_admin()
         
         # Check if review exists
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
         
-        # Check ownership
-        if not facade.is_review_author(review_id, current_user_id):
+        # Check ownership (admins can bypass)
+        if not admin and not facade.is_review_author(review_id, current_user_id):
             api.abort(403, "You do not have permission to update this review")
         
         # Update the review
@@ -66,16 +68,17 @@ class ReviewResource(Resource):
 
     @jwt_required()
     def delete(self, review_id):
-        """Delete a review (requires authentication and ownership)"""
+        """Delete a review (requires authentication and ownership, or admin)"""
         current_user_id = get_jwt_identity()
+        admin = is_admin()
         
         # Check if review exists
         review = facade.get_review(review_id)
         if not review:
             api.abort(404, "Review not found")
         
-        # Check ownership
-        if not facade.is_review_author(review_id, current_user_id):
+        # Check ownership (admins can bypass)
+        if not admin and not facade.is_review_author(review_id, current_user_id):
             api.abort(403, "You do not have permission to delete this review")
         
         # Delete the review
