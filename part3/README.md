@@ -8,6 +8,7 @@
 - [Authentication & Authorization](#authentication--authorization)
 - [API Endpoints](#api-endpoints)
 - [Database](#database)
+  - [ER Diagram](ER_DIAGRAM.md)
 - [Architecture](#architecture)
 - [SQL Scripts](#sql-scripts)
 - [Testing](#testing)
@@ -89,6 +90,13 @@ Part 3 transforms the HBnB API into a production-ready application with:
 - `seed.sql` - Initial data (admin user, amenities)
 - `data.sql` - Sample test data
 - Comprehensive SQL documentation
+
+### ✅ Task 10: Entity-Relationship Diagram
+- Mermaid.js ER diagram visualizing database schema
+- Complete entity definitions with attributes and types
+- Visual representation of all relationships (1:N, M:N)
+- Detailed documentation of constraints and business rules
+- See [ER_DIAGRAM.md](ER_DIAGRAM.md)
 
 ---
 
@@ -274,6 +282,18 @@ User ──1:N──→ Review         (User.reviews ↔ Review.user)
 Place ──1:N──→ Review        (Place.reviews ↔ Review.place)
 Place ──M:N──→ Amenity       (via place_amenity table)
 ```
+
+### Entity-Relationship Diagram
+
+For a detailed visual representation of the database schema, see **[ER_DIAGRAM.md](ER_DIAGRAM.md)**.
+
+The ER diagram includes:
+- All entities with their attributes and data types
+- Relationship cardinalities (1:N, M:N)
+- Foreign key constraints
+- Primary and unique keys
+- Cascade delete rules
+- Business logic and constraints
 
 ### Database Initialization
 
