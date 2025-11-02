@@ -18,6 +18,13 @@ Populates the database with initial data:
 - 10 common amenities (WiFi, Pool, Parking, etc.)
 - Sample place with amenities
 
+### data.sql
+Additional sample data for testing and demonstration:
+- 3 sample users (Alice, Bob, Carol)
+- 4 sample places (Modern Loft, Beach Cottage, Mountain Retreat, City Studio)
+- Place-amenity associations
+- 5 sample reviews
+
 ## Usage
 
 ### Using SQLite3
@@ -30,6 +37,9 @@ sqlite3 hbnb.db < schema.sql
 
 # Insert initial data
 sqlite3 hbnb.db < seed.sql
+
+# Optional: Insert additional sample data
+sqlite3 hbnb.db < data.sql
 ```
 
 ### Using MySQL
