@@ -109,9 +109,10 @@ python3 init_db.py
 - Facade: `app/business/facade.py` orchestrates business rules and uses specific repos
 
 ## Raw SQL Scripts
-- `schema.sql`: Creates tables, FKs, indexes
-- `seed.sql`: Inserts admin user and common amenities, sample place
-- `SQL_README.md`: Instructions for using the SQL scripts (SQLite/MySQL/Python)
+All SQL scripts are located in the `sql/` directory:
+- `sql/schema.sql`: Creates tables, FKs, indexes
+- `sql/seed.sql`: Inserts admin user and common amenities, sample place
+- `sql/SQL_README.md`: Complete instructions for using the SQL scripts (SQLite/MySQL/Python)
 
 ## Testing (Manual examples)
 ```bash
@@ -146,5 +147,7 @@ curl -s -X POST http://localhost:5000/api/v1/places/ \
 - `app/models/*.py` — SQLAlchemy models
 - `app/persistence/*.py` — repositories and factory
 - `app/business/facade.py` — business logic
-- `schema.sql`, `seed.sql` — raw SQL scripts
-- `SQL_README.md` — SQL scripts guide
+- `sql/` — raw SQL scripts folder
+  - `schema.sql` — database schema
+  - `seed.sql` — initial data
+  - `SQL_README.md` — SQL usage guide

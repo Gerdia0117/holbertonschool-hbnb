@@ -22,6 +22,9 @@ Populates the database with initial data:
 
 ### Using SQLite3
 ```bash
+# Navigate to the sql directory
+cd sql/
+
 # Create database and schema
 sqlite3 hbnb.db < schema.sql
 
