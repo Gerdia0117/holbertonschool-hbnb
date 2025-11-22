@@ -4,40 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBnB - Place Details</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>HBnB</h1>
-            <nav>
-                <a href="places.html">Back to Places</a>
-                <a href="#" id="logout-link">Logout</a>
-            </nav>
-        </header>
+    <header>
+        <img src="images/logo.png" alt="HBnB Logo" class="logo">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html" class="login-button">Login</a>
+        </nav>
+    </header>
 
-        <main>
-            <section id="place-details">
-                <!-- Place details will be dynamically loaded here -->
-                <p class="loading">Loading place details...</p>
-            </section>
+    <main>
+        <section class="place-details">
+            <h1>Cozy Apartment</h1>
+            
+            <div class="place-info">
+                <p><strong>Host:</strong> John Doe</p>
+                <p><strong>Price:</strong> $120 per night</p>
+                <p><strong>Description:</strong> A comfortable and modern apartment in the heart of the city. Perfect for couples or solo travelers.</p>
+                <p><strong>Amenities:</strong> WiFi, Kitchen, Air Conditioning, Workspace</p>
+            </div>
+        </section>
 
-            <section id="reviews-section">
-                <h2>Reviews</h2>
-                <div id="reviews-list">
-                    <!-- Reviews will be dynamically loaded here -->
-                </div>
-                <button id="add-review-btn" class="btn-primary" style="display: none;">
-                    Add a Review
-                </button>
-            </section>
-        </main>
+        <section id="reviews">
+            <h2>Reviews</h2>
+            
+            <div class="review-card">
+                <p><strong>Alice Smith</strong> - Rating: ⭐⭐⭐⭐⭐</p>
+                <p>Amazing place! Very clean and the host was super helpful.</p>
+            </div>
 
-        <footer>
-            <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
-        </footer>
-    </div>
+            <div class="review-card">
+                <p><strong>Bob Johnson</strong> - Rating: ⭐⭐⭐⭐</p>
+                <p>Great location, close to everything. Would stay again!</p>
+            </div>
+        </section>
+    </main>
 
-    <script src="js/place-details.js"></script>
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
 </body>
 </html>

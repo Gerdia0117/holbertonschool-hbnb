@@ -4,63 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBnB - Add Review</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>HBnB</h1>
-            <nav>
-                <a href="#" id="back-link">Back to Place</a>
-                <a href="places.html">All Places</a>
-                <a href="#" id="logout-link">Logout</a>
-            </nav>
-        </header>
+    <header>
+        <img src="images/logo.png" alt="HBnB Logo" class="logo">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="place.html">Back to Place</a>
+        </nav>
+    </header>
 
-        <main class="review-container">
-            <h2>Add Your Review</h2>
-            <div id="place-info">
-                <!-- Place name will be shown here -->
-            </div>
+    <main>
+        <h1>Add a Review</h1>
+        
+        <section class="add-review">
+            <form id="review-form" class="form">
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="">Select a rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="3">3 - Good</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="1">1 - Poor</option>
+                </select>
 
-            <form id="review-form">
-                <div class="form-group">
-                    <label for="rating">Rating:</label>
-                    <select id="rating" name="rating" required>
-                        <option value="">Select a rating</option>
-                        <option value="5">⭐⭐⭐⭐⭐ (5 - Excellent)</option>
-                        <option value="4">⭐⭐⭐⭐ (4 - Very Good)</option>
-                        <option value="3">⭐⭐⭐ (3 - Good)</option>
-                        <option value="2">⭐⭐ (2 - Fair)</option>
-                        <option value="1">⭐ (1 - Poor)</option>
-                    </select>
-                </div>
+                <label for="comment">Your Review:</label>
+                <textarea id="comment" name="comment" required rows="5" placeholder="Share your experience..."></textarea>
 
-                <div class="form-group">
-                    <label for="review-text">Your Review:</label>
-                    <textarea 
-                        id="review-text" 
-                        name="text" 
-                        required 
-                        rows="6"
-                        placeholder="Share your experience..."
-                        minlength="10"
-                    ></textarea>
-                    <small>Minimum 10 characters</small>
-                </div>
-
-                <button type="submit" class="btn-primary">Submit Review</button>
-                
-                <div id="error-message" class="error-message" style="display: none;"></div>
-                <div id="success-message" class="success-message" style="display: none;"></div>
+                <button type="submit">Submit Review</button>
             </form>
-        </main>
+        </section>
+    </main>
 
-        <footer>
-            <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
-        </footer>
-    </div>
-
-    <script src="js/add-review.js"></script>
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
 </body>
 </html>
