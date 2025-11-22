@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Places</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HBnB</h1>
+            <nav>
+                <a href="places.html" class="active">Places</a>
+                <a href="#" id="logout-link">Logout</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="filters">
+                <h2>Explore Places</h2>
+                <div class="filter-group">
+                    <label for="country-filter">Filter by Country:</label>
+                    <select id="country-filter">
+                        <option value="">All Countries</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+            </section>
+
+            <section id="places-list" class="places-grid">
+                <!-- Places will be dynamically loaded here -->
+                <p class="loading">Loading places...</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/places.js"></script>
+</body>
+</html>

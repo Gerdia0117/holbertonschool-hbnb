@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HBnB</h1>
+            <p>Your Home Away From Home</p>
+        </header>
+
+        <main class="login-container">
+            <h2>Welcome Back</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Enter your email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        placeholder="Enter your password"
+                    >
+                </div>
+
+                <button type="submit" class="btn-primary">Login</button>
+                
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </form>
+
+            <div class="test-credentials">
+                <p><strong>Test Credentials:</strong></p>
+                <p>Email: admin@hbnb.io</p>
+                <p>Password: admin1234</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- TODO: Create this JavaScript file -->
+    <script src="js/auth.js"></script>
+</body>
+</html>

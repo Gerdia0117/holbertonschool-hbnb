@@ -15,4 +15,4 @@ sqlalchemy==2.0.23
 # flake8==6.1.0
 
 # Production Server (for deployment)
-# gunicorn==21.2.0
+# gunicorn==21.2.0flask-cors==6.0.1

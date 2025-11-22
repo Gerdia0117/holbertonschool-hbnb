@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Place Details</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HBnB</h1>
+            <nav>
+                <a href="places.html">Back to Places</a>
+                <a href="#" id="logout-link">Logout</a>
+            </nav>
+        </header>
+
+        <main>
+            <section id="place-details">
+                <!-- Place details will be dynamically loaded here -->
+                <p class="loading">Loading place details...</p>
+            </section>
+
+            <section id="reviews-section">
+                <h2>Reviews</h2>
+                <div id="reviews-list">
+                    <!-- Reviews will be dynamically loaded here -->
+                </div>
+                <button id="add-review-btn" class="btn-primary" style="display: none;">
+                    Add a Review
+                </button>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/place-details.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restx import Api
+from flask_cors import CORS
 from app.extensions import bcrypt, jwt, db
 from app.api.user_endpoints import api as user_ns
 from app.api.amenity_endpoints import api as amenity_ns
@@ -19,6 +20,9 @@ def create_app(config_name='default'):
         Flask: The configured Flask application instance
     """
     app = Flask(__name__)
+    
+    # Enable CORS for front-end
+    CORS(app)
     
     # Load configuration
     from config import config
