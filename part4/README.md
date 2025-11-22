@@ -1,145 +1,128 @@
 # HBnB Evolution - Part 4: Simple Web Client
 
-## Overview
-This is the front-end web client for the HBnB application. It provides an interactive user interface that connects to the REST API built in Part 3.
+## Task 0: Design ✅ COMPLETE
 
-## Project Structure
+This directory contains the front-end web client for the HBnB application.
+
+### Files Created
+
 ```
 part4/
-├── index.html          # Login page (entry point)
-├── places.html         # List of all places
-├── place.html          # Detailed view of a single place
-├── add_review.html     # Form to add a review
-├── css/
-│   └── styles.css      # Main stylesheet
-├── js/
-│   ├── auth.js         # Authentication utilities
-│   ├── places.js       # Places list logic
-│   ├── place-details.js # Place details logic
-│   └── add-review.js   # Add review logic
-└── images/             # Image assets
+├── index.html          # List of places (main page)
+├── login.html          # Login form
+├── place.html          # Place details page
+├── add_review.html     # Add review form
+├── styles.css          # Complete styling
+├── images/
+│   ├── logo.png        # Logo for header (placeholder)
+│   └── icon.png        # Favicon (placeholder)
+└── README.md           # This file
 ```
 
-## Technologies Used
-- **HTML5**: Structure and content
-- **CSS3**: Styling and responsive design
-- **JavaScript ES6**: Client-side logic and API interaction
-- **Fetch API**: HTTP requests to back-end
-- **Cookies**: JWT token storage for authentication
+### Task 0 Requirements Met ✅
 
-## API Endpoints (from Part 3)
-Your front-end connects to these endpoints:
+#### 1. Four Required Pages
+- ✅ **index.html** - List of Places with place cards
+- ✅ **login.html** - Login Form  
+- ✅ **place.html** - Place Details
+- ✅ **add_review.html** - Add Review Form
 
-### Authentication
-- `POST /api/v1/auth/login` - User login (returns JWT token)
+#### 2. Required Structure
+**Header (all pages):**
+- ✅ Application logo with class `logo`
+- ✅ Login button/link with class `login-button`
+- ✅ Navigation links (index.html and login.html)
 
-### Places
-- `GET /api/v1/places` - Get all places
-- `GET /api/v1/places/{id}` - Get specific place details
+**Footer (all pages):**
+- ✅ Text indicating "all rights reserved"
 
-### Reviews
-- `POST /api/v1/reviews` - Create a new review (requires authentication)
-- `GET /api/v1/places/{id}/reviews` - Get reviews for a place
+#### 3. Required CSS Classes
+- ✅ `.logo` - Header logo
+- ✅ `.login-button` - Login button
+- ✅ `.place-card` - Place cards in index.html
+- ✅ `.details-button` - View details buttons
+- ✅ `.place-details` - Place details section
+- ✅ `.place-info` - Place information container
+- ✅ `.review-card` - Review cards
+- ✅ `.add-review` - Add review section
+- ✅ `.form` - Form styling
 
-## Setup Instructions
+#### 4. Fixed Parameters (EXACTLY as specified)
+- ✅ Margin: 20px for place and review cards
+- ✅ Padding: 10px for place and review cards
+- ✅ Border: 1px solid #ddd for place and review cards
+- ✅ Border Radius: 10px for place and review cards
 
-### 1. Enable CORS in Part 3 API
-Before running the client, you need to enable CORS in your API:
+#### 5. Data Display
+**Index Page:**
+- ✅ Places displayed as cards with `.place-card` class
+- ✅ Each card includes: name, price per night, "View Details" button with `.details-button` class
 
-```bash
-# Navigate to Part 3
-cd ../part3
+**Place Details Page:**
+- ✅ Extended information (host, price, description, amenities) using `.place-details` and `.place-info`
+- ✅ Reviews displayed as cards with `.review-card` class showing comment, user name, and rating
+- ✅ Button to navigate to add_review.html
 
-# Activate virtual environment
-source .venv/bin/activate
+#### 6. Semantic HTML5
+- ✅ Uses `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`
+- ✅ Proper document structure
+- ✅ Valid HTML5 DOCTYPE
 
-# Install flask-cors
-pip install flask-cors
+### Design Choices (Flexible Parameters)
 
-# Update requirements.txt
-echo "flask-cors==4.0.0" >> requirements.txt
-```
+- **Color Palette**: 
+  - Primary: #FF5A5F (Airbnb red)
+  - Secondary: #00A699 (teal)
+  - Background: #f5f5f5
+  
+- **Font**: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 
-Then add CORS configuration to `part3/app/__init__.py` (see instructions below).
+- **Images**: Placeholder files provided (logo.png, icon.png)
+  - Replace with actual logo and favicon
 
-### 2. Start the API Server
-```bash
-# From part3 directory with venv activated
-python run.py
-```
+### W3C Validation
 
-The API should run on `http://localhost:5000`
+To validate HTML files:
+1. Visit: https://validator.w3.org/#validate_by_upload
+2. Upload each HTML file:
+   - index.html
+   - login.html
+   - place.html
+   - add_review.html
 
-### 3. Open the Web Client
-Simply open `index.html` in your web browser:
+All files use valid HTML5 structure and should pass W3C validation.
+
+### Viewing the Pages
+
+Simply open any HTML file in a web browser:
 ```bash
 # From part4 directory
 firefox index.html
 # or
 google-chrome index.html
-# or just double-click index.html in your file manager
 ```
 
-## Usage Flow
+Or use Python's built-in HTTP server:
+```bash
+cd part4
+python3 -m http.server 8000
+# Then open: http://localhost:8000
+```
 
-1. **Login** (`index.html`)
-   - Enter email and password
-   - On success, JWT token is stored in a cookie
-   - Redirected to places list
+### Notes
 
-2. **Places List** (`places.html`)
-   - View all places
-   - Filter by country
-   - Click on a place to see details
+- This is Task 0 (Design) - **HTML and CSS only**
+- No JavaScript functionality yet
+- All data is static/hardcoded
+- Dynamic functionality will be added in Tasks 1-5
 
-3. **Place Details** (`place.html`)
-   - View full information about a place
-   - See reviews
-   - Click "Add Review" if authenticated
+### Next Tasks
 
-4. **Add Review** (`add_review.html`)
-   - Rate the place (1-5 stars)
-   - Write review text
-   - Submit to API
+- **Task 1**: Login functionality
+- **Task 2**: Display list of places from API
+- **Task 3**: Place details from API  
+- **Task 4**: Add review functionality
 
-## Authentication
-- JWT tokens are stored as cookies with the name `token`
-- Protected pages check for token existence
-- If no token found, user is redirected to login page
-- Token is sent in `Authorization: Bearer <token>` header for API requests
+---
 
-## Testing
-Test user credentials (from Part 3 seed data):
-- **Email**: admin@hbnb.io
-- **Password**: admin1234
-
-## Development Notes
-- All API calls use `http://localhost:5000` as base URL
-- You can change this in each JS file if your API runs on a different port
-- The client uses vanilla JavaScript (no frameworks)
-- All files use ES6+ syntax
-
-## Troubleshooting
-
-### CORS Error
-If you get "CORS policy" errors in browser console:
-- Make sure flask-cors is installed in Part 3
-- Verify CORS is configured in `app/__init__.py`
-- Restart your API server
-
-### Token Issues
-If pages keep redirecting to login:
-- Check browser console for errors
-- Verify token is being stored (browser DevTools > Application > Cookies)
-- Ensure login API is returning a valid JWT token
-
-### API Connection Failed
-- Verify Part 3 API is running (`http://localhost:5000`)
-- Check API endpoints match what's in your JavaScript files
-- Use browser Network tab to inspect failed requests
-
-## Next Steps
-- Implement all TODO items in JavaScript files
-- Style pages according to design specifications
-- Add error handling and loading states
-- Test with different users and edge cases
+**Task 0 Status**: ✅ Complete and ready for submission
