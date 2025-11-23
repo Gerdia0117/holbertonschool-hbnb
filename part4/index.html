@@ -12,39 +12,32 @@
         <img src="images/logo.png" alt="HBnB Logo" class="logo">
         <nav>
             <a href="index.html">Home</a>
-            <a href="login.html" class="login-button">Login</a>
+            <a href="login.html" id="login-link" class="login-button">Login</a>
         </nav>
     </header>
 
     <main>
         <h1>Find Your Perfect Place</h1>
         
+        <div class="filters">
+            <label for="price-filter">Filter by Price:</label>
+            <select id="price-filter">
+                <option value="all">All</option>
+                <option value="10">Up to $10</option>
+                <option value="50">Up to $50</option>
+                <option value="100">Up to $100</option>
+            </select>
+        </div>
+        
         <section id="places">
-            <!-- Place Card 1 -->
-            <div class="place-card">
-                <h2>Cozy Apartment</h2>
-                <p class="price">$120 per night</p>
-                <button class="details-button">View Details</button>
-            </div>
-
-            <!-- Place Card 2 -->
-            <div class="place-card">
-                <h2>Beachside Villa</h2>
-                <p class="price">$350 per night</p>
-                <button class="details-button">View Details</button>
-            </div>
-
-            <!-- Place Card 3 -->
-            <div class="place-card">
-                <h2>Mountain Cabin</h2>
-                <p class="price">$200 per night</p>
-                <button class="details-button">View Details</button>
-            </div>
+            <p class="loading">Loading places...</p>
         </section>
     </main>
 
     <footer>
         <p>© 2024 HBnB, Inc. All rights reserved.</p>
     </footer>
+
+    <script src="scripts.js"></script>
 </body>
 </html>

@@ -84,6 +84,45 @@ main h1 {
     font-size: 2rem;
 }
 
+/* Filters Section */
+.filters {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters label {
+    font-weight: 500;
+    margin-right: 1rem;
+    color: #333;
+}
+
+.filters select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.filters select:focus {
+    outline: none;
+    border-color: #FF5A5F;
+}
+
+/* Loading and Error Messages */
+.loading, .error {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+}
+
+.error {
+    color: #D93025;
+}
+
 /* ===========================
    Place Card - FIXED PARAMETERS
    All specified values are REQUIRED

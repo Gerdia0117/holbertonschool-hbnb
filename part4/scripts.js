@@ -98,3 +98,107 @@ function logout() {
     deleteCookie('token');
     window.location.href = 'login.html';
 }
+
+// ========================================
+// TASK 2: Index Page - List of Places
+// ========================================
+
+let allPlaces = []; // Store all places for filtering
+
+// Check authentication and load places on index page
+if (document.getElementById('places')) {
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuthentication();
+        fetchPlaces();
+        setupPriceFilter();
+    });
+}
+
+function checkAuthentication() {
+    const token = getCookie('token');
+    const loginLink = document.getElementById('login-link');
+
+    if (loginLink) {
+        if (!token) {
+            loginLink.style.display = 'inline-block';
+        } else {
+            loginLink.style.display = 'none';
+        }
+    }
+}
+
+async function fetchPlaces() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/places`);
+
+        if (response.ok) {
+            const places = await response.json();
+            allPlaces = places;
+            displayPlaces(places);
+        } else {
+            document.getElementById('places').innerHTML = '<p class="error">Failed to load places.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching places:', error);
+        document.getElementById('places').innerHTML = '<p class="error">Error loading places. Please check if the API is running.</p>';
+    }
+}
+
+function displayPlaces(places) {
+    const placesContainer = document.getElementById('places');
+    placesContainer.innerHTML = '';
+
+    if (places.length === 0) {
+        placesContainer.innerHTML = '<p>No places available.</p>';
+        return;
+    }
+
+    places.forEach(place => {
+        const placeCard = document.createElement('div');
+        placeCard.className = 'place-card';
+        placeCard.dataset.price = place.price;
+
+        placeCard.innerHTML = `
+            <h2>${place.name}</h2>
+            <p class="price">$${place.price} per night</p>
+            <p>${place.description || 'No description available'}</p>
+            <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
+        `;
+
+        placesContainer.appendChild(placeCard);
+    });
+}
+
+function setupPriceFilter() {
+    const priceFilter = document.getElementById('price-filter');
+    
+    if (priceFilter) {
+        priceFilter.addEventListener('change', (event) => {
+            const selectedPrice = event.target.value;
+            filterPlacesByPrice(selectedPrice);
+        });
+    }
+}
+
+function filterPlacesByPrice(maxPrice) {
+    const placeCards = document.querySelectorAll('.place-card');
+
+    placeCards.forEach(card => {
+        const price = parseFloat(card.dataset.price);
+
+        if (maxPrice === 'all') {
+            card.style.display = 'inline-block';
+        } else {
+            const max = parseFloat(maxPrice);
+            if (price <= max) {
+                card.style.display = 'inline-block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+}
+
+function viewPlaceDetails(placeId) {
+    window.location.href = `place.html?id=${placeId}`;
+}
