@@ -10,6 +10,7 @@ place_model = api.model("Place", {
     "id": fields.String(readonly=True, description="Place ID"),
     "name": fields.String(required=True, description="Place name"),
     "description": fields.String(description="Place description"),
+    "city": fields.String(required=True, description="City name"),
     "price": fields.Float(required=True, description="Price per night"),
     "latitude": fields.Float(description="Latitude coordinate"),
     "longitude": fields.Float(description="Longitude coordinate"),

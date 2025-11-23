@@ -39,5 +39,6 @@ class Place(BaseModel):
             "latitude": self.latitude,
             "longitude": self.longitude,
             "owner_id": self.owner_id,
+            "amenities": [amenity.name for amenity in self.amenities] if self.amenities else []
         })
         return data

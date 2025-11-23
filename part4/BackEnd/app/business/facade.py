@@ -109,25 +109,25 @@ class HBnBFacade:
         if not data.get("name"):
             raise ValueError("Amenity name is required")
         amenity = Amenity(**data)
-        return self.user_repo.save(amenity)
+        return self.amenity_repo.save(amenity)
 
     def get_amenity(self, amenity_id):
-        return self.user_repo.get("Amenity", amenity_id)
+        return self.amenity_repo.get("Amenity", amenity_id)
 
     def get_all_amenities(self):
-        return self.user_repo.all("Amenity")
+        return self.amenity_repo.all("Amenity")
 
     def update_amenity(self, amenity_id, data):
-        amenity = self.user_repo.get("Amenity", amenity_id)
+        amenity = self.amenity_repo.get("Amenity", amenity_id)
         if not amenity:
             return None
         if "name" in data:
             amenity.name = data["name"]
-        self.user_repo.save(amenity)
+        self.amenity_repo.save(amenity)
         return amenity
 
     def delete_amenity(self, amenity_id):
-        return self.user_repo.delete("Amenity", amenity_id)
+        return self.amenity_repo.delete("Amenity", amenity_id)
 
     # -------------------------------
     # Place methods
@@ -145,26 +145,26 @@ class HBnBFacade:
         data.setdefault("longitude", 0.0)
 
         place = Place(**data)
-        return self.user_repo.save(place)
+        return self.place_repo.save(place)
 
     def get_place(self, place_id):
-        return self.user_repo.get("Place", place_id)
+        return self.place_repo.get("Place", place_id)
 
     def get_all_places(self):
-        return self.user_repo.all("Place")
+        return self.place_repo.all("Place")
 
     def update_place(self, place_id, data):
-        place = self.user_repo.get("Place", place_id)
+        place = self.place_repo.get("Place", place_id)
         if not place:
             return None
         for key, value in data.items():
             if hasattr(place, key):
                 setattr(place, key, value)
-        self.user_repo.save(place)
+        self.place_repo.save(place)
         return place
 
     def delete_place(self, place_id):
-        return self.user_repo.delete("Place", place_id)
+        return self.place_repo.delete("Place", place_id)
 
     # -------------------------------
     # Review methods
@@ -176,7 +176,7 @@ class HBnBFacade:
 
         if not user_id or not self.user_repo.get("User", user_id):
             raise ValueError("Valid user_id is required")
-        if not place_id or not self.user_repo.get("Place", place_id):
+        if not place_id or not self.place_repo.get("Place", place_id):
             raise ValueError("Valid place_id is required")
         if not text:
             raise ValueError("Review text is required")
@@ -190,29 +190,29 @@ class HBnBFacade:
             raise ValueError("You have already reviewed this place")
 
         review = Review(**data)
-        return self.user_repo.save(review)
+        return self.review_repo.save(review)
 
     def get_review(self, review_id):
-        return self.user_repo.get("Review", review_id)
+        return self.review_repo.get("Review", review_id)
 
     def get_all_reviews(self):
-        return self.user_repo.all("Review")
+        return self.review_repo.all("Review")
 
     def update_review(self, review_id, data):
-        review = self.user_repo.get("Review", review_id)
+        review = self.review_repo.get("Review", review_id)
         if not review:
             return None
         if "text" in data:
             review.text = data["text"]
-        self.user_repo.save(review)
+        self.review_repo.save(review)
         return review
 
     def delete_review(self, review_id):
-        return self.user_repo.delete("Review", review_id)
+        return self.review_repo.delete("Review", review_id)
 
     def get_reviews_by_place(self, place_id):
         return [
-            r for r in self.user_repo.all("Review")
+            r for r in self.review_repo.all("Review")
             if getattr(r, "place_id", None) == place_id
         ]
     
@@ -221,17 +221,17 @@ class HBnBFacade:
     # -------------------------------
     def is_place_owner(self, place_id, user_id):
         """Check if a user owns a specific place."""
-        place = self.user_repo.get("Place", place_id)
+        place = self.place_repo.get("Place", place_id)
         return place and getattr(place, 'owner_id', None) == user_id
     
     def is_review_author(self, review_id, user_id):
         """Check if a user is the author of a specific review."""
-        review = self.user_repo.get("Review", review_id)
+        review = self.review_repo.get("Review", review_id)
         return review and getattr(review, 'user_id', None) == user_id
     
     def has_user_reviewed_place(self, user_id, place_id):
         """Check if a user has already reviewed a specific place."""
-        reviews = self.user_repo.all("Review")
+        reviews = self.review_repo.all("Review")
         for review in reviews:
             if (getattr(review, 'user_id', None) == user_id and 
                 getattr(review, 'place_id', None) == place_id):
