@@ -138,6 +138,57 @@ Use the token in the browser's cookies (or inspect via DevTools).
 - [x] Display place images
 - [x] Logout functionality
 
+## Database Seeding
+
+The backend includes a seed script to populate the database with test data:
+
+```bash
+cd part4/BackEnd
+source .venv/bin/activate
+python seed_data.py
+```
+
+This creates:
+- 2 users (admin and regular user)
+- 3 places (Cozy Downtown Apartment, Beachfront Villa, Mountain Cabin Retreat)
+- 6 amenities (WiFi, Kitchen, Air Conditioning, Workspace, TV, Parking)
+- 3 sample reviews
+
+## Key Features
+
+**Image Integration:**
+- Place images automatically matched by place name
+- Supports .png format
+- Images display on both index and details pages
+- Graceful fallback if image not found
+
+**Price Filtering:**
+- Client-side filtering (no API calls)
+- Filter by: All, Up to $10, Up to $50, Up to $100
+- Instant results using display toggle
+
+**Session Management:**
+- JWT tokens stored in browser cookies
+- 7-day token expiration
+- Automatic logout on token expiry
+- Login/Logout button toggle based on auth state
+
+## Troubleshooting
+
+**Can't login?**
+- Make sure backend is running on port 5000
+- Check browser console for errors
+- Try clearing cookies and logging in again
+
+**Places not showing?**
+- Verify backend database is seeded (run `seed_data.py`)
+- Check Network tab in DevTools for API responses
+
+**Images not loading?**
+- Ensure image filenames match place names exactly
+- Images must be in `frontend/images/` directory
+- Check file extensions are `.png`
+
 ## Tips
 
 - Use `document.cookie` to manage JWT tokens
@@ -148,7 +199,8 @@ Use the token in the browser's cookies (or inspect via DevTools).
 
 ## Author
 
-Holberton School Student
+Gerald D. Carrasquillo  
+Holberton School
 
 ## License
 
