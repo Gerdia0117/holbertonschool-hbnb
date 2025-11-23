@@ -161,7 +161,11 @@ function displayPlaces(places) {
         placeCard.className = 'place-card';
         placeCard.dataset.price = place.price;
 
+        // Use place name as image filename
+        const imagePath = `images/${place.name}.png`;
+
         placeCard.innerHTML = `
+            <img src="${imagePath}" alt="${place.name}" class="place-image" onerror="this.style.display='none'">
             <h2>${place.name}</h2>
             <p class="price">$${place.price} per night</p>
             <p>${place.description || 'No description available'}</p>
@@ -294,6 +298,14 @@ async function fetchPlaceDetails(placeId) {
 async function displayPlaceDetails(place) {
     const placeDetailsSection = document.getElementById('place-details');
     placeDetailsSection.innerHTML = '';
+
+    // Add place image
+    const img = document.createElement('img');
+    img.src = `images/${place.name}.png`;
+    img.alt = place.name || 'Place image';
+    img.className = 'place-detail-image';
+    img.onerror = function() { this.style.display = 'none'; };
+    placeDetailsSection.appendChild(img);
 
     // Create place title
     const title = document.createElement('h1');

@@ -147,6 +147,14 @@ main h1 {
     transition: transform 0.2s;
 }
 
+.place-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
 .place-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -193,6 +201,14 @@ main h1 {
     border-radius: 10px;
     margin-bottom: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.place-detail-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
 }
 
 .place-details h1 {
