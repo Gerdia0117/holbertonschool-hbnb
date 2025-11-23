@@ -241,6 +241,12 @@ function checkAuthenticationForPlaceDetails() {
     if (addReviewSection) {
         if (token) {
             addReviewSection.style.display = 'block';
+            // Update the review link to include place ID
+            const placeId = getPlaceIdFromURL();
+            const reviewLink = addReviewSection.querySelector('a');
+            if (reviewLink && placeId) {
+                reviewLink.href = `add_review.html?place_id=${placeId}`;
+            }
         } else {
             addReviewSection.style.display = 'none';
         }
@@ -386,5 +392,52 @@ async function displayReviews(reviews) {
         reviewCard.appendChild(reviewText);
 
         reviewsList.appendChild(reviewCard);
+    }
+}
+
+// ========================================
+// TASK 4: Add Review Form (Foundation)
+// ========================================
+
+// Check if we're on the add review page
+if (document.getElementById('review-form')) {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check for both place_id and id parameters
+        const params = new URLSearchParams(window.location.search);
+        const placeId = params.get('place_id') || params.get('id');
+        
+        if (!placeId) {
+            document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Invalid place ID.</span>';
+            document.getElementById('review-form').style.display = 'none';
+            return;
+        }
+        
+        // Update back link
+        const backLink = document.getElementById('back-to-place');
+        if (backLink) {
+            backLink.href = `place.html?id=${placeId}`;
+        }
+        
+        // Fetch and display place name
+        fetchPlaceNameForReview(placeId);
+    });
+}
+
+async function fetchPlaceNameForReview(placeId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/places/${placeId}`);
+        
+        if (response.ok) {
+            const place = await response.json();
+            const displayElement = document.getElementById('place-name-display');
+            if (displayElement) {
+                displayElement.textContent = `Reviewing: ${place.name || 'Unnamed Place'}`;
+            }
+        } else {
+            document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Place not found.</span>';
+        }
+    } catch (error) {
+        console.error('Error fetching place:', error);
+        document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Error loading place information.</span>';
     }
 }
