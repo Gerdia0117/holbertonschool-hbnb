@@ -402,12 +402,20 @@ async function displayReviews(reviews) {
 }
 
 // ========================================
-// TASK 4: Add Review Form (Foundation)
+// TASK 4: Add Review Form
 // ========================================
 
 // Check if we're on the add review page
 if (document.getElementById('review-form')) {
     document.addEventListener('DOMContentLoaded', () => {
+        // Check authentication first
+        const token = getCookie('token');
+        if (!token) {
+            // Redirect unauthenticated users to index page
+            window.location.href = 'index.html';
+            return;
+        }
+        
         // Check for both place_id and id parameters
         const params = new URLSearchParams(window.location.search);
         const placeId = params.get('place_id') || params.get('id');
@@ -426,6 +434,30 @@ if (document.getElementById('review-form')) {
         
         // Fetch and display place name
         fetchPlaceNameForReview(placeId);
+        
+        // Setup form submission handler
+        const reviewForm = document.getElementById('review-form');
+        reviewForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            // Get form values
+            const reviewText = document.getElementById('comment').value;
+            const rating = document.getElementById('rating').value;
+            
+            // Disable submit button during request
+            const submitButton = reviewForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+            
+            try {
+                await submitReview(token, placeId, reviewText, rating);
+            } finally {
+                // Re-enable submit button
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        });
     });
 }
 
@@ -445,5 +477,52 @@ async function fetchPlaceNameForReview(placeId) {
     } catch (error) {
         console.error('Error fetching place:', error);
         document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Error loading place information.</span>';
+    }
+}
+
+async function submitReview(token, placeId, reviewText, rating) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                text: reviewText,
+                place_id: placeId
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('Review submitted successfully!');
+            
+            // Clear the form
+            document.getElementById('review-form').reset();
+            
+            // Redirect to place details page after short delay
+            setTimeout(() => {
+                window.location.href = `place.html?id=${placeId}`;
+            }, 1500);
+        } else {
+            // Handle error response
+            const errorData = await response.json().catch(() => ({}));
+            const errorMessage = errorData.message || response.statusText || 'Failed to submit review';
+            
+            if (response.status === 400 && errorMessage.includes('already reviewed')) {
+                alert('You have already reviewed this place.');
+            } else if (response.status === 400 && errorMessage.includes('own place')) {
+                alert('You cannot review your own place.');
+            } else if (response.status === 401) {
+                alert('Your session has expired. Please login again.');
+                window.location.href = 'login.html';
+            } else {
+                alert('Failed to submit review: ' + errorMessage);
+            }
+        }
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        alert('Network error. Please check if the API server is running.');
     }
 }
