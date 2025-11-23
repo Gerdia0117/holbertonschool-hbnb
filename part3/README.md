@@ -5,58 +5,7 @@ This document contains the Entity-Relationship (ER) diagram for the HBnB applica
 
 ## Database Schema Diagram
 
-```mermaid
-erDiagram
-    USER ||--o{ PLACE : owns
-    USER ||--o{ REVIEW : writes
-    PLACE ||--o{ REVIEW : has
-    PLACE }o--o{ AMENITY : offers
-
-    USER {
-        string id PK "UUID, Primary Key"
-        datetime created_at "Timestamp"
-        datetime updated_at "Timestamp"
-        string first_name "Max 50 chars"
-        string last_name "Max 50 chars"
-        string email UK "Max 120 chars, Unique"
-        string password "Max 255 chars, Hashed"
-        boolean is_admin "Default: False"
-    }
-
-    PLACE {
-        string id PK "UUID, Primary Key"
-        datetime created_at "Timestamp"
-        datetime updated_at "Timestamp"
-        string name "Max 100 chars"
-        string description "Max 500 chars, Optional"
-        string city "Max 50 chars"
-        float price "Default: 0.0"
-        float latitude "Optional"
-        float longitude "Optional"
-        string owner_id FK "Foreign Key to USER"
-    }
-
-    REVIEW {
-        string id PK "UUID, Primary Key"
-        datetime created_at "Timestamp"
-        datetime updated_at "Timestamp"
-        string text "Max 500 chars"
-        integer rating "Rating value"
-        string user_id FK "Foreign Key to USER"
-        string place_id FK "Foreign Key to PLACE"
-    }
-
-    AMENITY {
-        string id PK "UUID, Primary Key"
-        datetime created_at "Timestamp"
-        datetime updated_at "Timestamp"
-        string name UK "Max 50 chars, Unique"
-    }
-
-    PLACE_AMENITY {
-        string place_id PK,FK "Foreign Key to PLACE"
-        string amenity_id PK,FK "Foreign Key to AMENITY"
-    }
+```![alt text](image.png)
 ```
 
 ## Relationship Details
