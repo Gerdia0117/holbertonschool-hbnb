@@ -202,3 +202,189 @@ function filterPlacesByPrice(maxPrice) {
 function viewPlaceDetails(placeId) {
     window.location.href = `place.html?id=${placeId}`;
 }
+
+// ========================================
+// TASK 3: Place Details Page
+// ========================================
+
+// Check if we're on the place details page
+if (document.getElementById('place-details')) {
+    document.addEventListener('DOMContentLoaded', () => {
+        const placeId = getPlaceIdFromURL();
+        if (placeId) {
+            checkAuthenticationForPlaceDetails();
+            fetchPlaceDetails(placeId);
+        } else {
+            document.getElementById('place-details').innerHTML = '<p class="error">Invalid place ID.</p>';
+        }
+    });
+}
+
+function getPlaceIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
+
+function checkAuthenticationForPlaceDetails() {
+    const token = getCookie('token');
+    const loginLink = document.getElementById('login-link');
+    const addReviewSection = document.getElementById('add-review');
+
+    if (loginLink) {
+        if (!token) {
+            loginLink.style.display = 'inline-block';
+        } else {
+            loginLink.style.display = 'none';
+        }
+    }
+
+    if (addReviewSection) {
+        if (token) {
+            addReviewSection.style.display = 'block';
+        } else {
+            addReviewSection.style.display = 'none';
+        }
+    }
+}
+
+async function fetchPlaceDetails(placeId) {
+    const token = getCookie('token');
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    // Include token if available (for authenticated requests)
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/places/${placeId}`, {
+            method: 'GET',
+            headers: headers
+        });
+
+        if (response.ok) {
+            const place = await response.json();
+            await displayPlaceDetails(place);
+            await fetchReviews(placeId);
+        } else if (response.status === 404) {
+            document.getElementById('place-details').innerHTML = '<p class="error">Place not found.</p>';
+        } else {
+            document.getElementById('place-details').innerHTML = '<p class="error">Failed to load place details.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching place details:', error);
+        document.getElementById('place-details').innerHTML = '<p class="error">Error loading place details. Please check if the API is running.</p>';
+    }
+}
+
+async function displayPlaceDetails(place) {
+    const placeDetailsSection = document.getElementById('place-details');
+    placeDetailsSection.innerHTML = '';
+
+    // Create place title
+    const title = document.createElement('h1');
+    title.textContent = place.name || 'Unnamed Place';
+    placeDetailsSection.appendChild(title);
+
+    // Create place info container
+    const placeInfo = document.createElement('div');
+    placeInfo.className = 'place-info';
+
+    // Fetch owner/host information if owner_id exists
+    let hostName = 'Unknown';
+    if (place.owner_id) {
+        try {
+            const userResponse = await fetch(`${API_BASE_URL}/users/${place.owner_id}`);
+            if (userResponse.ok) {
+                const user = await userResponse.json();
+                hostName = `${user.first_name} ${user.last_name}`;
+            }
+        } catch (error) {
+            console.error('Error fetching host info:', error);
+        }
+    }
+
+    // Host
+    const hostPara = document.createElement('p');
+    hostPara.innerHTML = `<strong>Host:</strong> ${hostName}`;
+    placeInfo.appendChild(hostPara);
+
+    // Price
+    const pricePara = document.createElement('p');
+    pricePara.innerHTML = `<strong>Price:</strong> $${place.price || 'N/A'} per night`;
+    placeInfo.appendChild(pricePara);
+
+    // Description
+    const descPara = document.createElement('p');
+    descPara.innerHTML = `<strong>Description:</strong> ${place.description || 'No description available.'}`;
+    placeInfo.appendChild(descPara);
+
+    // Amenities
+    const amenitiesPara = document.createElement('p');
+    if (place.amenities && place.amenities.length > 0) {
+        amenitiesPara.innerHTML = `<strong>Amenities:</strong> ${place.amenities.join(', ')}`;
+    } else {
+        amenitiesPara.innerHTML = `<strong>Amenities:</strong> No amenities listed`;
+    }
+    placeInfo.appendChild(amenitiesPara);
+
+    placeDetailsSection.appendChild(placeInfo);
+}
+
+async function fetchReviews(placeId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/place/${placeId}`);
+
+        if (response.ok) {
+            const reviews = await response.json();
+            displayReviews(reviews);
+        } else {
+            document.getElementById('reviews-list').innerHTML = '<p>Failed to load reviews.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        document.getElementById('reviews-list').innerHTML = '<p>Error loading reviews.</p>';
+    }
+}
+
+async function displayReviews(reviews) {
+    const reviewsList = document.getElementById('reviews-list');
+    reviewsList.innerHTML = '';
+
+    if (reviews.length === 0) {
+        reviewsList.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
+        return;
+    }
+
+    // Fetch user information for each review
+    for (const review of reviews) {
+        const reviewCard = document.createElement('div');
+        reviewCard.className = 'review-card';
+
+        // Fetch user name
+        let userName = 'Anonymous';
+        if (review.user_id) {
+            try {
+                const userResponse = await fetch(`${API_BASE_URL}/users/${review.user_id}`);
+                if (userResponse.ok) {
+                    const user = await userResponse.json();
+                    userName = `${user.first_name} ${user.last_name}`;
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        }
+
+        const reviewHeader = document.createElement('p');
+        reviewHeader.innerHTML = `<strong>${userName}</strong>`;
+        reviewCard.appendChild(reviewHeader);
+
+        const reviewText = document.createElement('p');
+        reviewText.textContent = review.text || 'No review text provided.';
+        reviewCard.appendChild(reviewText);
+
+        reviewsList.appendChild(reviewCard);
+    }
+}
