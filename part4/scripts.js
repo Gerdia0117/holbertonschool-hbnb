@@ -117,12 +117,15 @@ if (document.getElementById('places')) {
 function checkAuthentication() {
     const token = getCookie('token');
     const loginLink = document.getElementById('login-link');
+    const logoutButton = document.getElementById('logout-button');
 
     if (loginLink) {
         if (!token) {
             loginLink.style.display = 'inline-block';
+            if (logoutButton) logoutButton.style.display = 'none';
         } else {
             loginLink.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'inline-block';
         }
     }
 }
@@ -228,13 +231,16 @@ function getPlaceIdFromURL() {
 function checkAuthenticationForPlaceDetails() {
     const token = getCookie('token');
     const loginLink = document.getElementById('login-link');
+    const logoutButton = document.getElementById('logout-button');
     const addReviewSection = document.getElementById('add-review');
 
     if (loginLink) {
         if (!token) {
             loginLink.style.display = 'inline-block';
+            if (logoutButton) logoutButton.style.display = 'none';
         } else {
             loginLink.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'inline-block';
         }
     }
 
