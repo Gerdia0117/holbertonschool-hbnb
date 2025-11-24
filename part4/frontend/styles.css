@@ -10,6 +10,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #e8e8e8;
     color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header - REQUIRED: logo class and login-button class */
@@ -53,6 +56,7 @@ main {
     padding: 40px 20px;
     max-width: 1200px;
     margin: 0 auto;
+    flex: 1;
 }
 
 h1 {
@@ -114,9 +118,11 @@ h2 {
     margin-bottom: 15px;
 }
 
-.place-card h2 {
+.place-card h2,
+.place-card h3 {
     font-size: 22px;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .place-card p {
@@ -350,7 +356,7 @@ footer {
     background-color: #ff9800;
     padding: 20px;
     text-align: center;
-    margin-top: 60px;
+    margin-top: auto;
     font-size: 14px;
     color: white;
 }

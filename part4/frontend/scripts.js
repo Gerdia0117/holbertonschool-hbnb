@@ -163,9 +163,7 @@ function displayPlaces(places) {
 
         placeCard.innerHTML = `
             <h3>${place.name}</h3>
-            <p><strong>Description:</strong> ${place.description || 'No description available'}</p>
-            <p><strong>Location:</strong> ${place.city || 'Unknown location'}</p>
-            <p><strong>Price per night:</strong> $${place.price}</p>
+            <p>Price per night: $${place.price}</p>
             <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
         `;
 
