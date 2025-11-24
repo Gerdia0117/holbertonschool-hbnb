@@ -106,7 +106,7 @@ function logout() {
 let allPlaces = []; // Store all places for filtering
 
 // Check authentication and load places on index page
-if (document.getElementById('places')) {
+if (document.getElementById('places-list')) {
     document.addEventListener('DOMContentLoaded', () => {
         checkAuthentication();
         fetchPlaces();
@@ -139,16 +139,16 @@ async function fetchPlaces() {
             allPlaces = places;
             displayPlaces(places);
         } else {
-            document.getElementById('places').innerHTML = '<p class="error">Failed to load places.</p>';
+            document.getElementById('places-list').innerHTML = '<p class="error">Failed to load places.</p>';
         }
     } catch (error) {
         console.error('Error fetching places:', error);
-        document.getElementById('places').innerHTML = '<p class="error">Error loading places. Please check if the API is running.</p>';
+        document.getElementById('places-list').innerHTML = '<p class="error">Error loading places. Please check if the API is running.</p>';
     }
 }
 
 function displayPlaces(places) {
-    const placesContainer = document.getElementById('places');
+    const placesContainer = document.getElementById('places-list');
     placesContainer.innerHTML = '';
 
     if (places.length === 0) {
