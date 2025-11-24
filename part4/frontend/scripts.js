@@ -161,13 +161,11 @@ function displayPlaces(places) {
         placeCard.className = 'place-card';
         placeCard.dataset.price = place.price;
 
-        // Use place name as image filename
-        const imagePath = `images/${place.name}.png`;
-
         placeCard.innerHTML = `
-            <img src="${imagePath}" alt="${place.name}" onerror="this.style.display='none'">
-            <h2>${place.name}</h2>
-            <p>Price per night: $${place.price}</p>
+            <h3>${place.name}</h3>
+            <p><strong>Description:</strong> ${place.description || 'No description available'}</p>
+            <p><strong>Location:</strong> ${place.city || 'Unknown location'}</p>
+            <p><strong>Price per night:</strong> $${place.price}</p>
             <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
         `;
 
