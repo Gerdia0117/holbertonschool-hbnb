@@ -251,7 +251,11 @@ function checkAuthenticationForPlaceDetails() {
             const addReviewLink = document.getElementById('add-review-link');
             if (addReviewLink) {
                 const placeId = getPlaceIdFromURL();
-                addReviewLink.href = `add_review.html?place_id=${placeId}`;
+                const reviewUrl = `add_review.html?place_id=${placeId}`;
+                console.log('Setting review link to:', reviewUrl);
+                addReviewLink.href = reviewUrl;
+            } else {
+                console.error('add-review-link element not found');
             }
         } else {
             addReviewSection.style.display = 'none';
