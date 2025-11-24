@@ -68,10 +68,10 @@ def seed_database():
         # Create sample places
         places_data = [
             {
-                'name': 'Cozy Downtown Apartment',
-                'description': 'A beautiful and modern apartment in the heart of the city. Perfect for couples or solo travelers looking for comfort and convenience.',
+                'name': 'Modern Apartment',
+                'description': '',
                 'city': 'San Francisco',
-                'price': 120.0,
+                'price': 200.0,
                 'latitude': 37.7749,
                 'longitude': -122.4194,
                 'owner_id': admin.id,
@@ -79,7 +79,7 @@ def seed_database():
             },
             {
                 'name': 'Beachfront Villa',
-                'description': 'Stunning ocean views with direct beach access. Spacious and luxurious with all modern amenities.',
+                'description': '',
                 'city': 'Miami',
                 'price': 250.0,
                 'latitude': 25.7617,
@@ -89,7 +89,7 @@ def seed_database():
             },
             {
                 'name': 'Mountain Cabin Retreat',
-                'description': 'Peaceful cabin nestled in the mountains. Perfect for a quiet getaway surrounded by nature.',
+                'description': '',
                 'city': 'Denver',
                 'price': 85.0,
                 'latitude': 39.7392,
