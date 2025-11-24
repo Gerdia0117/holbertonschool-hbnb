@@ -18,19 +18,18 @@
     </header>
 
     <main>
-        <div class="container">
-            <div class="property-info">
-                <h1>Reviewing: <span id="place-name">Loading...</span></h1>
-            </div>
+        <div style="max-width: 800px; margin: 40px auto; padding: 40px; background: #f4f4f4;">
+            <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 40px; color: #000;">Reviewing: <span id="place-name">Loading...</span></h1>
             
-            <div class="add-review">
-                <h2>Add a Review</h2>
-                <form id="review-form" class="form">
-                    <label for="review">Your Review:</label>
-                    <textarea id="review" name="review" required placeholder="Share your experience..."></textarea>
+            <div style="background: white; padding: 30px; border-radius: 8px;">
+                <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 25px; color: #000;">Add a Review</h2>
+                
+                <form id="review-form">
+                    <label for="review" style="display: block; font-weight: bold; margin-bottom: 10px; color: #000; font-size: 1rem;">Your Review:</label>
+                    <textarea id="review" name="review" required placeholder="" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; min-height: 100px; margin-bottom: 20px; font-family: Arial, sans-serif;"></textarea>
                     
-                    <label for="rating">Rating:</label>
-                    <select id="rating" name="rating" required>
+                    <label for="rating" style="display: block; font-weight: bold; margin-bottom: 10px; color: #000; font-size: 1rem;">Rating:</label>
+                    <select id="rating" name="rating" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; margin-bottom: 25px; background: white;">
                         <option value="">Select rating</option>
                         <option value="1">1 Star</option>
                         <option value="2">2 Stars</option>
@@ -39,7 +38,7 @@
                         <option value="5">5 Stars</option>
                     </select>
                     
-                    <button type="submit">Submit Review</button>
+                    <button type="submit" style="width: 100%; padding: 15px; background-color: #ff9800; color: white; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">Submit Review</button>
                 </form>
             </div>
         </div>
