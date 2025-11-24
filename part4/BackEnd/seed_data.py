@@ -50,7 +50,10 @@ def seed_database():
             print(f"Regular user found: {user.email}")
         
         # Create sample amenities
-        amenity_names = ['WiFi', 'Kitchen', 'Air Conditioning', 'Workspace', 'TV', 'Parking']
+        amenity_names = [
+            'WiFi', 'Kitchen', 'Air Conditioning', 'Workspace', 'TV', 'Parking',
+            'Stove', '2+ Bathrooms', 'Fridge', 'Hot Water', 'Cold Water', 'Uber Friendly'
+        ]
         amenities = []
         for name in amenity_names:
             amenity = Amenity.query.filter_by(name=name).first()
@@ -72,7 +75,7 @@ def seed_database():
                 'latitude': 37.7749,
                 'longitude': -122.4194,
                 'owner_id': admin.id,
-                'amenity_indices': [0, 1, 2, 3]  # WiFi, Kitchen, Air Conditioning, Workspace
+                'amenity_indices': [0, 1, 2, 3, 6, 7, 8, 9, 10, 11]  # WiFi, Kitchen, AC, Workspace, Stove, 2+ Bathrooms, Fridge, Hot Water, Cold Water, Uber Friendly
             },
             {
                 'name': 'Beachfront Villa',
@@ -82,7 +85,7 @@ def seed_database():
                 'latitude': 25.7617,
                 'longitude': -80.1918,
                 'owner_id': admin.id,
-                'amenity_indices': [0, 1, 2, 4, 5]  # WiFi, Kitchen, Air Conditioning, TV, Parking
+                'amenity_indices': [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11]  # WiFi, Kitchen, AC, TV, Parking, Stove, 2+ Bathrooms, Fridge, Hot Water, Cold Water, Uber Friendly
             },
             {
                 'name': 'Mountain Cabin Retreat',
@@ -92,7 +95,7 @@ def seed_database():
                 'latitude': 39.7392,
                 'longitude': -104.9903,
                 'owner_id': admin.id,
-                'amenity_indices': [0, 1, 4]  # WiFi, Kitchen, TV
+                'amenity_indices': [0, 1, 4, 6, 7, 8, 9, 10, 11]  # WiFi, Kitchen, TV, Stove, 2+ Bathrooms, Fridge, Hot Water, Cold Water, Uber Friendly
             }
         ]
         
