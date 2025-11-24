@@ -158,18 +158,17 @@ function displayPlaces(places) {
 
     places.forEach(place => {
         const placeCard = document.createElement('div');
-        placeCard.className = 'place-card';
+        placeCard.className = 'card';
         placeCard.dataset.price = place.price;
 
         // Use place name as image filename
         const imagePath = `images/${place.name}.png`;
 
         placeCard.innerHTML = `
-            <img src="${imagePath}" alt="${place.name}" class="place-image" onerror="this.style.display='none'">
+            <img src="${imagePath}" alt="${place.name}" onerror="this.style.display='none'">
             <h2>${place.name}</h2>
-            <p class="price">$${place.price} per night</p>
-            <p>${place.description || 'No description available'}</p>
-            <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
+            <p>Price per night: $${place.price}</p>
+            <button class="btn" onclick="viewPlaceDetails('${place.id}')">View Details</button>
         `;
 
         placesContainer.appendChild(placeCard);
@@ -188,7 +187,7 @@ function setupPriceFilter() {
 }
 
 function filterPlacesByPrice(maxPrice) {
-    const placeCards = document.querySelectorAll('.place-card');
+    const placeCards = document.querySelectorAll('.card');
 
     placeCards.forEach(card => {
         const price = parseFloat(card.dataset.price);
