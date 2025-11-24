@@ -18,28 +18,30 @@
     </header>
 
     <main>
-        <h1>Add a Review</h1>
-        <p style="text-align: center; font-size: 18px; margin-bottom: 30px;">
-            Reviewing: <strong><span id="place-name">Loading...</span></strong>
-        </p>
-        
-        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-            <form id="review-form" class="form">
-                <label for="review">Your Review:</label>
-                <textarea id="review" name="review" required placeholder="Share your experience..."></textarea>
-                
-                <label for="rating">Rating:</label>
-                <select id="rating" name="rating" required>
-                    <option value="">Select rating</option>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                </select>
-                
-                <button type="submit">Submit Review</button>
-            </form>
+        <div class="container">
+            <div class="property-info">
+                <h1>Reviewing: <span id="place-name">Loading...</span></h1>
+            </div>
+            
+            <div class="add-review">
+                <h2>Add a Review</h2>
+                <form id="review-form" class="form">
+                    <label for="review">Your Review:</label>
+                    <textarea id="review" name="review" required placeholder="Share your experience..."></textarea>
+                    
+                    <label for="rating">Rating:</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                    
+                    <button type="submit">Submit Review</button>
+                </form>
+            </div>
         </div>
     </main>
 
