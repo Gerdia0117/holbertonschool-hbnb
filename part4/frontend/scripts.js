@@ -420,99 +420,71 @@ async function displayReviews(reviews) {
 // TASK 4: Add Review Form
 // ========================================
 
-// Check if we're on the add_review.html page
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if this is the add review page
-    if (document.getElementById('place-name')) {
-        console.log('Add review page loaded');
-        const token = checkAuthenticationForReview();
-        if (!token) return; // Will redirect if not authenticated
+    const reviewForm = document.getElementById('review-form');
+    const placeName = document.getElementById('place-name');
+    
+    // Only run on add_review.html
+    if (reviewForm && placeName) {
+        // Check authentication
+        const token = getCookie('token');
+        if (!token) {
+            window.location.href = 'index.html';
+            return;
+        }
         
-        const placeId = getPlaceIdFromURL();
-        console.log('Place ID from URL:', placeId);
+        // Get place ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const placeId = params.get('place_id');
         
         if (!placeId) {
-            alert('No place ID provided in URL. Expected format: add_review.html?place_id=...');
+            alert('No place ID provided');
             window.location.href = 'index.html';
             return;
         }
         
         // Fetch and display place name
-        fetchPlaceName(placeId);
-        
-        const reviewForm = document.getElementById('review-form');
-        if (reviewForm) {
-            reviewForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                
-                const reviewText = document.getElementById('review').value;
-                console.log('Submitting review for place:', placeId);
-                await submitReview(token, placeId, reviewText);
+        fetch(`${API_BASE_URL}/places/${placeId}`)
+            .then(response => response.json())
+            .then(place => {
+                placeName.textContent = place.name || 'Unknown Place';
+            })
+            .catch(error => {
+                placeName.textContent = 'Unknown Place';
             });
-        }
+        
+        // Handle form submission
+        reviewForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const reviewText = document.getElementById('review').value;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/reviews/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        text: reviewText,
+                        place_id: placeId
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('Review submitted successfully!');
+                    reviewForm.reset();
+                    setTimeout(() => {
+                        window.location.href = `place.html?id=${placeId}`;
+                    }, 1000);
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    alert('Failed to submit review: ' + (errorData.message || 'Please try again'));
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        });
     }
 });
-
-function checkAuthenticationForReview() {
-    const token = getCookie('token');
-    if (!token) {
-        window.location.href = 'index.html';
-        return null;
-    }
-    return token;
-}
-
-function getPlaceIdFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('place_id');
-}
-
-async function fetchPlaceName(placeId) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/places/${placeId}`);
-        if (response.ok) {
-            const place = await response.json();
-            document.getElementById('place-name').textContent = place.name || 'Unknown Place';
-        } else {
-            document.getElementById('place-name').textContent = 'Unknown Place';
-        }
-    } catch (error) {
-        console.error('Error fetching place name:', error);
-        document.getElementById('place-name').textContent = 'Unknown Place';
-    }
-}
-
-async function submitReview(token, placeId, reviewText) {
-    try {
-        console.log('Submitting review:', { placeId, textLength: reviewText.length });
-        const response = await fetch(`${API_BASE_URL}/reviews/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                text: reviewText,
-                place_id: placeId
-            })
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Review submitted successfully:', data);
-            alert('Review submitted successfully!');
-            document.getElementById('review-form').reset();
-            // Optionally redirect back to place details
-            setTimeout(() => {
-                window.location.href = `place.html?id=${placeId}`;
-            }, 1500);
-        } else {
-            const errorData = await response.json().catch(() => ({}));
-            console.error('Failed to submit review:', response.status, errorData);
-            alert(`Failed to submit review: ${errorData.message || response.statusText}`);
-        }
-    } catch (error) {
-        console.error('Error submitting review:', error);
-        alert('Network error. Please check if the API server is running.');
-    }
-}
