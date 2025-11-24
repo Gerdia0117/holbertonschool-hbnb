@@ -250,11 +250,29 @@ function checkAuthenticationForPlaceDetails() {
     if (addReviewSection) {
         if (token) {
             addReviewSection.style.display = 'block';
-            // Update the review link to include place ID
-            const placeId = getPlaceIdFromURL();
-            const reviewLink = addReviewSection.querySelector('a');
-            if (reviewLink && placeId) {
-                reviewLink.href = `add_review.html?place_id=${placeId}`;
+            // Setup review form submission handler on place.html
+            const reviewForm = document.getElementById('review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    
+                    const placeId = getPlaceIdFromURL();
+                    const reviewText = document.getElementById('review-text').value;
+                    const rating = document.getElementById('rating').value;
+                    
+                    // Disable submit button during request
+                    const submitButton = reviewForm.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                    
+                    try {
+                        await submitReview(token, placeId, reviewText, rating);
+                    } finally {
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalText;
+                    }
+                });
             }
         } else {
             addReviewSection.style.display = 'none';
@@ -343,10 +361,34 @@ async function displayPlaceDetails(place) {
     descPara.innerHTML = `<span class="label">Description:</span> ${place.description || 'No description available.'}`;
     card.appendChild(descPara);
 
-    // Amenities
+    // Amenities - Fetch actual amenity names
     const amenitiesPara = document.createElement('p');
     if (place.amenities && place.amenities.length > 0) {
-        amenitiesPara.innerHTML = `<span class="label">Amenities:</span> ${place.amenities.join(', ')}`;
+        // Extract amenity IDs from strings like "<Amenity UUID>"
+        const amenityIds = place.amenities.map(a => {
+            const match = a.match(/[a-f0-9-]{36}/);
+            return match ? match[0] : null;
+        }).filter(id => id !== null);
+        
+        // Fetch amenity names
+        const amenityNames = [];
+        for (const amenityId of amenityIds) {
+            try {
+                const amenityResponse = await fetch(`${API_BASE_URL}/amenities/${amenityId}`);
+                if (amenityResponse.ok) {
+                    const amenity = await amenityResponse.json();
+                    amenityNames.push(amenity.name);
+                }
+            } catch (error) {
+                console.error('Error fetching amenity:', error);
+            }
+        }
+        
+        if (amenityNames.length > 0) {
+            amenitiesPara.innerHTML = `<span class="label">Amenities:</span> ${amenityNames.join(', ')}`;
+        } else {
+            amenitiesPara.innerHTML = `<span class="label">Amenities:</span> No amenities listed`;
+        }
     } else {
         amenitiesPara.innerHTML = `<span class="label">Amenities:</span> No amenities listed`;
     }
@@ -418,11 +460,11 @@ async function displayReviews(reviews) {
 }
 
 // ========================================
-// TASK 4: Add Review Form
+// TASK 4: Add Review Form (separate page)
 // ========================================
 
-// Check if we're on the add review page
-if (document.getElementById('review-form')) {
+// Check if we're on the add_review.html page (not place.html with inline form)
+if (document.getElementById('place-name-display') && document.getElementById('review-form')) {
     document.addEventListener('DOMContentLoaded', () => {
         // Check authentication first
         const token = getCookie('token');
@@ -517,10 +559,16 @@ async function submitReview(token, placeId, reviewText, rating) {
             // Clear the form
             document.getElementById('review-form').reset();
             
-            // Redirect to place details page after short delay
-            setTimeout(() => {
-                window.location.href = `place.html?id=${placeId}`;
-            }, 1500);
+            // If on place.html, reload reviews. Otherwise redirect.
+            if (document.getElementById('place-details')) {
+                // Reload reviews on place.html
+                await fetchReviews(placeId);
+            } else {
+                // Redirect to place details page after short delay
+                setTimeout(() => {
+                    window.location.href = `place.html?id=${placeId}`;
+                }, 1500);
+            }
         } else {
             // Handle error response
             const errorData = await response.json().catch(() => ({}));
