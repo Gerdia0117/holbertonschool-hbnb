@@ -318,8 +318,10 @@ async function displayPlaceDetails(place) {
     pricePara.innerHTML = `<strong>Price per night:</strong> $${place.price || 'N/A'}`;
     card.appendChild(pricePara);
 
-    // Amenities
-    const amenitiesPara = document.createElement('p');
+    // Amenities with icons
+    const amenitiesDiv = document.createElement('div');
+    amenitiesDiv.style.marginTop = '15px';
+    
     if (place.amenities && place.amenities.length > 0) {
         // Extract amenity IDs from strings like "<Amenity UUID>"
         const amenityIds = place.amenities.map(a => {
@@ -327,29 +329,38 @@ async function displayPlaceDetails(place) {
             return match ? match[0] : null;
         }).filter(id => id !== null);
         
-        // Fetch amenity names
-        const amenityNames = [];
+        // Fetch amenity names and display as icons
+        const amenityIcons = [];
         for (const amenityId of amenityIds) {
             try {
                 const amenityResponse = await fetch(`${API_BASE_URL}/amenities/${amenityId}`);
                 if (amenityResponse.ok) {
                     const amenity = await amenityResponse.json();
-                    amenityNames.push(amenity.name);
+                    const name = amenity.name.toLowerCase();
+                    
+                    // Map amenity names to icons
+                    if (name.includes('wifi')) {
+                        amenityIcons.push('<img src="images/icon_wifi.png" alt="WiFi" title="WiFi" style="width: 30px; height: 30px; margin: 5px;">');
+                    } else if (name.includes('bath')) {
+                        amenityIcons.push('<img src="images/icon_bath.png" alt="Bathroom" title="Bathroom" style="width: 30px; height: 30px; margin: 5px;">');
+                    } else if (name.includes('bed') || name.includes('bedroom')) {
+                        amenityIcons.push('<img src="images/icon_bed.png" alt="Bedroom" title="Bedroom" style="width: 30px; height: 30px; margin: 5px;">');
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching amenity:', error);
             }
         }
         
-        if (amenityNames.length > 0) {
-            amenitiesPara.innerHTML = `<strong>Amenities:</strong> ${amenityNames.join(', ')}`;
+        if (amenityIcons.length > 0) {
+            amenitiesDiv.innerHTML = `<strong>Amenities:</strong><br>${amenityIcons.join('')}`;
         } else {
-            amenitiesPara.innerHTML = `<strong>Amenities:</strong> None`;
+            amenitiesDiv.innerHTML = `<strong>Amenities:</strong> None`;
         }
     } else {
-        amenitiesPara.innerHTML = `<strong>Amenities:</strong> None`;
+        amenitiesDiv.innerHTML = `<strong>Amenities:</strong> None`;
     }
-    card.appendChild(amenitiesPara);
+    card.appendChild(amenitiesDiv);
 
     placeDetailsSection.appendChild(card);
 }
