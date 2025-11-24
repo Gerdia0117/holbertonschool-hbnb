@@ -1,47 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBnB - Add Review</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HBNB - Add Review</title>
     <link rel="icon" href="images/icon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fefefe;
+        }
+        header {
+            background-color: #fd9703;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: black;
+            font-weight: bold;
+        }
+        header .logo {
+            font-size: 24px;
+        }
+        .login {
+            cursor: pointer;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .login:hover {
+            opacity: 0.8;
+        }
+        .container {
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .place-name {
+            text-align: center;
+            font-size: 18px;
+            color: #868582;
+            margin-bottom: 30px;
+        }
+        .card {
+            background-color: #f2f2f2;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.15);
+            margin-bottom: 40px;
+        }
+        .card label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .card select,
+        .card textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+        .card textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .btn {
+            background-color: #fd9703;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        footer {
+            background-color: #fd9703;
+            padding: 15px;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: black;
+            font-weight: bold;
+        }
+        .loading, .error {
+            text-align: center;
+            font-size: 18px;
+            color: #868582;
+        }
+        .error {
+            color: #e74c3c;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <img src="images/logo.png" alt="HBnB Logo" class="logo">
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="#" id="back-to-place">Back to Place</a>
-        </nav>
+        <div class="logo">hbnb</div>
+        <div>
+            <a href="index.html" class="login">Back to Places</a>
+        </div>
     </header>
 
-    <main>
-        <h1 id="page-title">Add a Review</h1>
-        <p id="place-name-display" style="margin-bottom: 20px; color: #666;">Loading place information...</p>
+    <div class="container">
+        <h1>Add a Review</h1>
+        <p id="place-name-display" class="place-name">Loading place information...</p>
         
-        <div class="add-review">
-            <form id="review-form" class="form">
+        <div class="card">
+            <form id="review-form">
                 <label for="rating">Rating:</label>
                 <select id="rating" name="rating" required>
                     <option value="">Select a rating</option>
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Very Good</option>
-                    <option value="3">3 - Good</option>
-                    <option value="2">2 - Fair</option>
-                    <option value="1">1 - Poor</option>
+                    <option value="5">5 - Excellent ★★★★★</option>
+                    <option value="4">4 - Very Good ★★★★☆</option>
+                    <option value="3">3 - Good ★★★☆☆</option>
+                    <option value="2">2 - Fair ★★☆☆☆</option>
+                    <option value="1">1 - Poor ★☆☆☆☆</option>
                 </select>
 
                 <label for="comment">Your Review:</label>
                 <textarea id="comment" name="comment" required rows="6" placeholder="Share your experience..."></textarea>
 
-                <button type="submit">Submit Review</button>
+                <button type="submit" class="btn">Submit Review</button>
             </form>
         </div>
-    </main>
+    </div>
 
     <footer>
-        <p>© 2024 HBnB, Inc. All rights reserved.</p>
+        © 2024 HBnB Evolution. All rights reserved.
     </footer>
 
     <script src="scripts.js"></script>
