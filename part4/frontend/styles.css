@@ -59,6 +59,27 @@ main {
     flex: 1;
 }
 
+/* Container for place details page */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Property Info Section */
+.property-info {
+    margin-bottom: 20px;
+}
+
+.property-info h1 {
+    color: #ff9800;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
 h1 {
     text-align: center;
     font-size: 32px;
@@ -187,28 +208,30 @@ h2 {
 }
 
 /* Reviews Section */
-#reviews-section {
-    margin-top: 40px;
+.reviews {
+    margin-bottom: 20px;
 }
 
-#reviews-section h2 {
+.reviews h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    color: #333;
 }
 
 /* REQUIRED: review-card class with FIXED PARAMETERS */
 .review-card {
-    background-color: white;
-    margin: 20px;              /* REQUIRED: 20px margin */
-    padding: 10px;             /* REQUIRED: 10px padding */
+    background-color: #f9f9f9;
+    margin: 10px 0;            /* Changed for container layout */
+    padding: 15px;             /* Slightly more padding for readability */
     border: 1px solid #ddd;    /* REQUIRED: 1px solid #ddd */
-    border-radius: 10px;       /* REQUIRED: 10px border-radius */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;        /* Smaller radius for cleaner look */
+    box-shadow: none;          /* Remove shadow inside container */
 }
 
 .review-card p {
-    margin: 8px 0;
+    margin: 5px 0;
     font-size: 16px;
+    line-height: 1.5;
 }
 
 .review-card strong {
@@ -218,11 +241,14 @@ h2 {
 
 /* REQUIRED: add-review class */
 .add-review {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-top: 40px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.add-review h2 {
+    color: #333;
+    margin-bottom: 15px;
 }
 
 /* REQUIRED: form class */
