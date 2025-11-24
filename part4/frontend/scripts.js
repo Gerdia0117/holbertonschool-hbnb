@@ -298,22 +298,21 @@ async function displayPlaceDetails(place) {
     const placeDetailsSection = document.getElementById('place-details');
     placeDetailsSection.innerHTML = '';
 
-    // Add place image
-    const img = document.createElement('img');
-    img.src = `images/${place.name}.png`;
-    img.alt = place.name || 'Place image';
-    img.className = 'place-detail-image';
-    img.onerror = function() { this.style.display = 'none'; };
-    placeDetailsSection.appendChild(img);
-
     // Create place title
     const title = document.createElement('h1');
     title.textContent = place.name || 'Unnamed Place';
     placeDetailsSection.appendChild(title);
 
-    // Create place info container
-    const placeInfo = document.createElement('div');
-    placeInfo.className = 'place-info';
+    // Create card container
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    // Add place image inside card
+    const img = document.createElement('img');
+    img.src = `images/${place.name}.png`;
+    img.alt = place.name || 'Place image';
+    img.onerror = function() { this.style.display = 'none'; };
+    card.appendChild(img);
 
     // Fetch owner/host information if owner_id exists
     let hostName = 'Unknown';
@@ -331,29 +330,29 @@ async function displayPlaceDetails(place) {
 
     // Host
     const hostPara = document.createElement('p');
-    hostPara.innerHTML = `<strong>Host:</strong> ${hostName}`;
-    placeInfo.appendChild(hostPara);
+    hostPara.innerHTML = `<span class="label">Host:</span> ${hostName}`;
+    card.appendChild(hostPara);
 
     // Price
     const pricePara = document.createElement('p');
-    pricePara.innerHTML = `<strong>Price:</strong> $${place.price || 'N/A'} per night`;
-    placeInfo.appendChild(pricePara);
+    pricePara.innerHTML = `<span class="label">Price per night:</span> $${place.price || 'N/A'}`;
+    card.appendChild(pricePara);
 
     // Description
     const descPara = document.createElement('p');
-    descPara.innerHTML = `<strong>Description:</strong> ${place.description || 'No description available.'}`;
-    placeInfo.appendChild(descPara);
+    descPara.innerHTML = `<span class="label">Description:</span> ${place.description || 'No description available.'}`;
+    card.appendChild(descPara);
 
     // Amenities
     const amenitiesPara = document.createElement('p');
     if (place.amenities && place.amenities.length > 0) {
-        amenitiesPara.innerHTML = `<strong>Amenities:</strong> ${place.amenities.join(', ')}`;
+        amenitiesPara.innerHTML = `<span class="label">Amenities:</span> ${place.amenities.join(', ')}`;
     } else {
-        amenitiesPara.innerHTML = `<strong>Amenities:</strong> No amenities listed`;
+        amenitiesPara.innerHTML = `<span class="label">Amenities:</span> No amenities listed`;
     }
-    placeInfo.appendChild(amenitiesPara);
+    card.appendChild(amenitiesPara);
 
-    placeDetailsSection.appendChild(placeInfo);
+    placeDetailsSection.appendChild(card);
 }
 
 async function fetchReviews(placeId) {
@@ -374,7 +373,13 @@ async function fetchReviews(placeId) {
 
 async function displayReviews(reviews) {
     const reviewsList = document.getElementById('reviews-list');
+    const reviewsSection = document.getElementById('reviews-section');
     reviewsList.innerHTML = '';
+
+    // Show the reviews section
+    if (reviewsSection) {
+        reviewsSection.style.display = 'block';
+    }
 
     if (reviews.length === 0) {
         reviewsList.innerHTML = '<p>No reviews yet. Be the first to review!</p>';
@@ -384,7 +389,7 @@ async function displayReviews(reviews) {
     // Fetch user information for each review
     for (const review of reviews) {
         const reviewCard = document.createElement('div');
-        reviewCard.className = 'review-card';
+        reviewCard.className = 'review';
 
         // Fetch user name
         let userName = 'Anonymous';
@@ -401,7 +406,7 @@ async function displayReviews(reviews) {
         }
 
         const reviewHeader = document.createElement('p');
-        reviewHeader.innerHTML = `<strong>${userName}</strong>`;
+        reviewHeader.innerHTML = `<span class="label">${userName}:</span>`;
         reviewCard.appendChild(reviewHeader);
 
         const reviewText = document.createElement('p');
