@@ -12,25 +12,34 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #fefefe;
+    background-color: #e8e8e8;
     overflow-x: hidden;
 }
 
 /* ===========================
-   Header Styles (index.html, place.html)
+   Header Styles
    =========================== */
 header {
-    background-color: #fd9703;
+    background-color: #ff9800;
     padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: black;
+    color: white;
     font-weight: bold;
 }
 
 header .logo {
-    font-size: 24px;
+    font-size: 28px;
+    color: #0066cc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+header .logo::before {
+    content: "🏠";
+    font-size: 32px;
 }
 
 header img {
@@ -39,27 +48,28 @@ header img {
 
 .login {
     cursor: pointer;
-    color: black;
+    color: white;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 16px;
 }
 
 .login:hover {
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 #logout-button {
     background-color: transparent;
     border: none;
-    color: black;
-    font-weight: bold;
+    color: white;
+    font-weight: normal;
     cursor: pointer;
     font-size: 16px;
     font-family: Arial, sans-serif;
 }
 
 #logout-button:hover {
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 /* ===========================
@@ -97,11 +107,11 @@ h1 {
 
 /* Card Styles (used on index and place details) */
 .card {
-    background-color: #f2f2f2;
-    width: 280px;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    background-color: white;
+    width: 300px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     text-align: center;
 }
 
@@ -114,30 +124,32 @@ h1 {
 }
 
 .card h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
 
 .card p {
     font-size: 16px;
-    color: #868582;
+    color: #333;
     margin-bottom: 20px;
 }
 
 .btn {
-    background-color: #fd9703;
+    background-color: #ff9800;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
     display: inline-block;
 }
 
 .btn:hover {
-    opacity: 0.9;
+    background-color: #e68900;
 }
 
 /* ===========================
@@ -150,10 +162,10 @@ h1 {
 }
 
 .place-details-container .card {
-    background-color: #f2f2f2;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     margin-bottom: 40px;
     text-align: left;
     width: auto;
@@ -191,11 +203,11 @@ h1 {
 }
 
 .review {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.15);
-    margin-bottom: 25px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
 .review p {
@@ -337,27 +349,27 @@ h1 {
     background: #ff9800;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 15px;
+    border-radius: 8px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
 }
 
 .review-page button:hover {
-    background: #e68a00;
+    background: #e68900;
 }
 
 /* ===========================
    Footer
    =========================== */
 footer {
-    background-color: #fd9703;
-    padding: 15px;
+    background-color: #ff9800;
+    padding: 20px;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 60px;
     font-size: 14px;
-    color: black;
-    font-weight: bold;
+    color: white;
+    font-weight: normal;
 }
 
 /* ===========================
