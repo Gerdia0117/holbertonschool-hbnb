@@ -30,20 +30,20 @@ header {
 }
 
 header .logo {
-    font-size: 28px;
-    color: #0066cc;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-header .logo::before {
-    content: "🏠";
-    font-size: 32px;
+header .logo img {
+    height: 36px;
+    width: auto;
 }
 
-header img {
-    height: 40px;
+header .logo span {
+    font-size: 32px;
+    color: #0066cc;
+    font-weight: bold;
 }
 
 .login {
