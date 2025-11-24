@@ -1,6 +1,6 @@
 /* ===========================
-   HBnB Task 0 - Design Styles
-   Fixed Parameters as Required
+   HBnB Evolution - Unified Styles
+   All pages use this single CSS file
    =========================== */
 
 /* Global Reset */
@@ -11,392 +11,373 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f5f5f5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fefefe;
+    overflow-x: hidden;
 }
 
 /* ===========================
-   Header - Required Structure
+   Header Styles (index.html, place.html)
    =========================== */
 header {
-    background-color: hsl (#FD9703);
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fd9703;
+    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: black;
+    font-weight: bold;
 }
 
-/* Logo - Required Class */
-.logo {
-    height: 60px;
-    width: auto;
+header .logo {
+    font-size: 24px;
 }
 
-header nav {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+header img {
+    height: 40px;
 }
 
-header nav a {
+.login {
+    cursor: pointer;
+    color: black;
     text-decoration: none;
-    color: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    font-weight: bold;
 }
 
-header nav a:hover {
-    background-color: #f0f0f0;
+.login:hover {
+    opacity: 0.8;
 }
 
-/* Login Button - Required Class */
-.login-button {
-    background-color: #FD9703 !important;
-    color: white !important;
-    font-weight: 500;
+#logout-button {
+    background-color: transparent;
     border: none;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
 }
 
-.login-button:hover {
-    background-color: #FD9703 !important;
+#logout-button:hover {
+    opacity: 0.8;
 }
 
 /* ===========================
-   Main Content
+   Index Page - Places List
    =========================== */
-main {
-    flex: 1;
-    max-width: 1200px;
-    width: 100%;
-    margin: 2rem auto;
-    padding: 0 2rem;
-}
-
-main h1 {
-    color: #333;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-}
-
-/* Filters Section */
-.filters {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.filters label {
-    font-weight: 500;
-    margin-right: 1rem;
-    color: #333;
-}
-
-.filters select {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.filters select:focus {
-    outline: none;
-    border-color: #FD9703;
-}
-
-/* Loading and Error Messages */
-.loading, .error {
+.container {
     text-align: center;
-    padding: 2rem;
-    color: #666;
+    padding: 40px 20px;
 }
 
-.error {
-    color: #D93025;
-}
-
-/* ===========================
-   Place Card - FIXED PARAMETERS
-   All specified values are REQUIRED
-   =========================== */
-.place-card {
-    background-color: #fff;
-    margin: 20px;              /* REQUIRED: 20px margin */
-    padding: 10px;             /* REQUIRED: 10px padding */
-    border: 1px solid #ddd;    /* REQUIRED: 1px solid #ddd */
-    border-radius: 10px;       /* REQUIRED: 10px border-radius */
-    display: inline-block;
-    width: calc(33.33% - 40px);
-    vertical-align: top;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-.place-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
+h1 {
+    text-align: center;
+    font-size: 32px;
     margin-bottom: 10px;
 }
 
-.place-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.filter {
+    margin-bottom: 30px;
+    font-size: 18px;
 }
 
-.place-card h2 {
-    color: #333;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+.filter select {
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
-.place-card .price {
-    color: #FF5A5F;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
+.places {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* Details Button - Required Class */
-.details-button {
-    background-color: #FD9703;
+/* Card Styles (used on index and place details) */
+.card {
+    background-color: #f2f2f2;
+    width: 280px;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.card h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 16px;
+    color: #868582;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #fd9703;
     color: white;
     border: none;
-    padding: 0.5rem 1.5rem;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
+    font-size: 16px;
     text-decoration: none;
     display: inline-block;
-    margin-top: 0.5rem;
 }
 
-.details-button:hover {
-    background-color: #FD9703;
+.btn:hover {
+    opacity: 0.9;
 }
 
 /* ===========================
-   Place Details - Required Classes
+   Place Details Page
    =========================== */
-.place-details {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.place-details-container {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.place-detail-image {
+.place-details-container .card {
+    background-color: #f2f2f2;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    margin-bottom: 40px;
+    text-align: left;
+    width: auto;
+}
+
+.place-details-container .card p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.place-details-container .card img {
     width: 100%;
     max-height: 400px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-.place-details h1 {
-    color: #333;
-    margin-bottom: 1.5rem;
+.place-details-container h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 30px;
 }
 
-.place-info {
-    margin: 1.5rem 0;
+.label {
+    font-weight: bold;
 }
 
-.place-info p {
-    margin: 1rem 0;
-    line-height: 1.8;
+/* Reviews Section */
+.reviews-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-/* ===========================
-   Review Card - FIXED PARAMETERS
-   All specified values are REQUIRED
-   =========================== */
-.review-card {
-    background-color: #fff;
-    margin: 20px;              /* REQUIRED: 20px margin */
-    padding: 10px;             /* REQUIRED: 10px padding */
-    border: 1px solid #ddd;    /* REQUIRED: 1px solid #ddd */
-    border-radius: 10px;       /* REQUIRED: 10px border-radius */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.review {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+    margin-bottom: 25px;
 }
 
-.review-card p {
-    margin: 0.5rem 0;
-}
-
-.review-card p:first-child {
-    font-weight: 600;
-    color: #333;
-}
-
-#reviews h2 {
-    color: #333;
-    margin: 2rem 0 1rem 0;
+.review p {
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 /* ===========================
-   Add Review Section - Required Classes
+   Login Page (Centered)
    =========================== */
-.add-review {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Form - Required Class */
-.form {
+.login-page {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f4f4f4;
 }
 
-.form label {
-    color: #333;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.form input,
-.form select,
-.form textarea {
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: inherit;
+.login-page main {
     width: 100%;
-}
-
-.form input:focus,
-.form select:focus,
-.form textarea:focus {
-    outline: none;
-    border-color: #FD9703;
-}
-
-.form button {
-    background-color: #FD9703;
-    color: white;
-    border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form button:hover {
-    background-color: #FD9703;
-}
-
-/* Login Form Specific Styles */
-#login-form {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     max-width: 400px;
-    margin: 0 auto;
+    padding: 20px;
 }
 
-#login-form label {
-    display: block;
+.login-page form {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-page h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
     color: #333;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
 }
 
-#login-form input {
+.login-page label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.login-page input {
     width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-size: 15px;
 }
 
-#login-form input:focus {
+.login-page input:focus {
     outline: none;
-    border-color: #FD9703;
+    border-color: #ff9800;
 }
 
-#login-form button {
+.login-page button {
     width: 100%;
-    background-color: #FD9703;
+    padding: 14px;
+    background: #ff9800;
     color: white;
     border: none;
-    padding: 0.75rem;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-#login-form button:hover {
-    background-color: #FD9703;
+.login-page button:hover {
+    background: #e68a00;
+}
+
+.login-page button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 /* ===========================
-   Footer - Required Structure
+   Add Review Page
+   =========================== */
+.review-page {
+    background: #f4f4f4;
+}
+
+.review-page .container {
+    width: 70%;
+    margin: 40px auto;
+    text-align: left;
+}
+
+.review-page h1 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.review-page h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.review-page label {
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.review-page textarea {
+    width: 100%;
+    height: 80px;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    resize: none;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.review-page select {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #dcdcdc;
+    margin-bottom: 25px;
+}
+
+.review-page button {
+    width: 100%;
+    padding: 14px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.review-page button:hover {
+    background: #e68a00;
+}
+
+/* ===========================
+   Footer
    =========================== */
 footer {
-    background-color: #333;
-    color: white;
+    background-color: #fd9703;
+    padding: 15px;
     text-align: center;
-    padding: 1.5rem;
-    margin-top: auto;
-}
-
-footer p {
-    margin: 0;
+    margin-top: 40px;
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 /* ===========================
-   Responsive Design
+   Utility Classes
    =========================== */
-@media (max-width: 768px) {
-    .place-card {
-        width: calc(100% - 40px);
-    }
-
-    header {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    header nav {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    main {
-        padding: 0 1rem;
-    }
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #868582;
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .place-card {
-        width: calc(50% - 40px);
-    }
+.error {
+    text-align: center;
+    font-size: 18px;
+    color: #e74c3c;
+}
+
+.place-name {
+    text-align: center;
+    font-size: 18px;
+    color: #868582;
+    margin-bottom: 30px;
 }
