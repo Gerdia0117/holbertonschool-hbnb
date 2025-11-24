@@ -18,22 +18,43 @@
         </nav>
     </header>
 
-    <main>
-        <div class="container">
-            <div id="place-details" class="property-info">
-                <!-- Place details will be populated dynamically -->
-            </div>
+    <main style="background: #e8e8e8; min-height: calc(100vh - 120px); padding: 40px 20px;">
+        <!-- Place Title -->
+        <h1 id="place-title" style="text-align: center; font-size: 2.5rem; margin-bottom: 30px; color: #000;">Loading...</h1>
+        
+        <!-- Place Details Card -->
+        <div id="place-details" style="max-width: 900px; margin: 0 auto 40px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <!-- Place info will be populated dynamically -->
+        </div>
 
-            <div class="reviews" id="reviews-section">
-                <h2>Reviews</h2>
-                <div id="reviews-list">
-                    <!-- Reviews will be populated dynamically -->
-                </div>
+        <!-- Reviews Section -->
+        <div id="reviews-section" style="max-width: 900px; margin: 0 auto;">
+            <h2 style="font-size: 2rem; margin-bottom: 20px; color: #000;">Reviews</h2>
+            <div id="reviews-list">
+                <!-- Reviews will be populated dynamically -->
             </div>
+        </div>
 
-            <div class="add-review" id="add-review" style="display: none;">
-                <h2>Add a Review</h2>
-                <p><a href="#" id="add-review-link" class="details-button">Write a Review</a></p>
+        <!-- Add Review Section -->
+        <div id="add-review" style="max-width: 900px; margin: 40px auto; display: none;">
+            <h2 style="font-size: 2rem; margin-bottom: 20px; color: #000;">Add a Review</h2>
+            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <form id="review-form">
+                    <label for="review-text" style="display: block; font-weight: bold; margin-bottom: 10px; color: #000;">Your Review:</label>
+                    <textarea id="review-text" name="review-text" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; min-height: 100px; margin-bottom: 20px; font-family: Arial, sans-serif;"></textarea>
+                    
+                    <label for="rating" style="display: block; font-weight: bold; margin-bottom: 10px; color: #000;">Rating:</label>
+                    <select id="rating" name="rating" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 25px; background: white;">
+                        <option value="">Select rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                    
+                    <button type="submit" style="width: 100%; padding: 15px; background-color: #ff9800; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">Submit Review</button>
+                </form>
             </div>
         </div>
     </main>

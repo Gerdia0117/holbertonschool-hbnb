@@ -247,15 +247,41 @@ function checkAuthenticationForPlaceDetails() {
     if (addReviewSection) {
         if (token) {
             addReviewSection.style.display = 'block';
-            // Set the add review link
-            const addReviewLink = document.getElementById('add-review-link');
-            if (addReviewLink) {
-                const placeId = getPlaceIdFromURL();
-                const reviewUrl = `add_review.html?place_id=${placeId}`;
-                console.log('Setting review link to:', reviewUrl);
-                addReviewLink.href = reviewUrl;
-            } else {
-                console.error('add-review-link element not found');
+            
+            // Setup inline review form submission
+            const reviewForm = document.getElementById('review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    
+                    const placeId = getPlaceIdFromURL();
+                    const reviewText = document.getElementById('review-text').value;
+                    
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/reviews/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                text: reviewText,
+                                place_id: placeId
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            alert('Review submitted successfully!');
+                            reviewForm.reset();
+                            await fetchReviews(placeId);
+                        } else {
+                            const errorData = await response.json().catch(() => ({}));
+                            alert('Failed to submit review: ' + (errorData.message || 'Please try again'));
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                });
             }
         } else {
             addReviewSection.style.display = 'none';
@@ -296,31 +322,37 @@ async function fetchPlaceDetails(placeId) {
 }
 
 async function displayPlaceDetails(place) {
+    // Set the main title
+    const placeTitle = document.getElementById('place-title');
+    if (placeTitle) {
+        placeTitle.textContent = place.name || 'Unnamed Place';
+    }
+
+    // Get the place details container
     const placeDetailsSection = document.getElementById('place-details');
     placeDetailsSection.innerHTML = '';
-
-    // Create place title (name)
-    const title = document.createElement('h1');
-    title.textContent = place.name || 'Unnamed Place';
-    placeDetailsSection.appendChild(title);
-
-    // Create card container for place info
-    const card = document.createElement('div');
-    card.className = 'place-info';
-
-    // Description
-    const descPara = document.createElement('p');
-    descPara.innerHTML = `<strong>Description:</strong> ${place.description || 'No description available.'}`;
-    card.appendChild(descPara);
+    placeDetailsSection.style.textAlign = 'center';
 
     // Price
     const pricePara = document.createElement('p');
     pricePara.innerHTML = `<strong>Price per night:</strong> $${place.price || 'N/A'}`;
-    card.appendChild(pricePara);
+    pricePara.style.marginBottom = '15px';
+    pricePara.style.fontSize = '1.1rem';
+    placeDetailsSection.appendChild(pricePara);
 
-    // Amenities with icons
-    const amenitiesDiv = document.createElement('div');
+    // Description
+    if (place.description) {
+        const descPara = document.createElement('p');
+        descPara.innerHTML = `<strong>Description:</strong> ${place.description}`;
+        descPara.style.marginBottom = '15px';
+        descPara.style.fontSize = '1.1rem';
+        placeDetailsSection.appendChild(descPara);
+    }
+
+    // Amenities
+    const amenitiesDiv = document.createElement('p');
     amenitiesDiv.style.marginTop = '15px';
+    amenitiesDiv.style.fontSize = '1.1rem';
     
     if (place.amenities && place.amenities.length > 0) {
         // Extract amenity IDs from strings like "<Amenity UUID>"
@@ -329,40 +361,29 @@ async function displayPlaceDetails(place) {
             return match ? match[0] : null;
         }).filter(id => id !== null);
         
-        // Fetch amenity names and display as icons
-        const amenityIcons = [];
+        // Fetch amenity names
+        const amenityNames = [];
         for (const amenityId of amenityIds) {
             try {
                 const amenityResponse = await fetch(`${API_BASE_URL}/amenities/${amenityId}`);
                 if (amenityResponse.ok) {
                     const amenity = await amenityResponse.json();
-                    const name = amenity.name.toLowerCase();
-                    
-                    // Map amenity names to icons
-                    if (name.includes('wifi')) {
-                        amenityIcons.push('<img src="images/icon_wifi.png" alt="WiFi" title="WiFi" style="width: 30px; height: 30px; margin: 5px;">');
-                    } else if (name.includes('bath')) {
-                        amenityIcons.push('<img src="images/icon_bath.png" alt="Bathroom" title="Bathroom" style="width: 30px; height: 30px; margin: 5px;">');
-                    } else if (name.includes('bed') || name.includes('bedroom')) {
-                        amenityIcons.push('<img src="images/icon_bed.png" alt="Bedroom" title="Bedroom" style="width: 30px; height: 30px; margin: 5px;">');
-                    }
+                    amenityNames.push(amenity.name);
                 }
             } catch (error) {
                 console.error('Error fetching amenity:', error);
             }
         }
         
-        if (amenityIcons.length > 0) {
-            amenitiesDiv.innerHTML = `<strong>Amenities:</strong><br>${amenityIcons.join('')}`;
+        if (amenityNames.length > 0) {
+            amenitiesDiv.innerHTML = `<strong>Amenities:</strong> ${amenityNames.join(', ')}`;
         } else {
             amenitiesDiv.innerHTML = `<strong>Amenities:</strong> None`;
         }
     } else {
         amenitiesDiv.innerHTML = `<strong>Amenities:</strong> None`;
     }
-    card.appendChild(amenitiesDiv);
-
-    placeDetailsSection.appendChild(card);
+    placeDetailsSection.appendChild(amenitiesDiv);
 }
 
 async function fetchReviews(placeId) {
@@ -399,7 +420,11 @@ async function displayReviews(reviews) {
     // Fetch user information for each review
     for (const review of reviews) {
         const reviewCard = document.createElement('div');
-        reviewCard.className = 'review-card';
+        reviewCard.style.background = 'white';
+        reviewCard.style.padding = '25px';
+        reviewCard.style.borderRadius = '15px';
+        reviewCard.style.marginBottom = '20px';
+        reviewCard.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
 
         // Fetch user name
         let userName = 'Anonymous';
@@ -416,12 +441,22 @@ async function displayReviews(reviews) {
         }
 
         const reviewHeader = document.createElement('p');
-        reviewHeader.innerHTML = `<span class="label">${userName}:</span>`;
+        reviewHeader.innerHTML = `<strong>${userName}:</strong>`;
+        reviewHeader.style.marginBottom = '10px';
+        reviewHeader.style.fontSize = '1.1rem';
         reviewCard.appendChild(reviewHeader);
 
         const reviewText = document.createElement('p');
         reviewText.textContent = review.text || 'No review text provided.';
+        reviewText.style.marginBottom = '10px';
+        reviewText.style.lineHeight = '1.5';
         reviewCard.appendChild(reviewText);
+
+        // Rating (placeholder - you can add actual rating display)
+        const ratingText = document.createElement('p');
+        ratingText.innerHTML = '<strong>Rating:</strong> ★★★★★';
+        ratingText.style.fontSize = '0.95rem';
+        reviewCard.appendChild(ratingText);
 
         reviewsList.appendChild(reviewCard);
     }
