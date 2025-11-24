@@ -421,8 +421,9 @@ async function displayReviews(reviews) {
 // ========================================
 
 // Check if we're on the add_review.html page
-if (document.getElementById('place-name')) {
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if this is the add review page
+    if (document.getElementById('place-name')) {
         console.log('Add review page loaded');
         const token = checkAuthenticationForReview();
         if (!token) return; // Will redirect if not authenticated
@@ -449,8 +450,8 @@ if (document.getElementById('place-name')) {
                 await submitReview(token, placeId, reviewText);
             });
         }
-    });
-}
+    }
+});
 
 function checkAuthenticationForReview() {
     const token = getCookie('token');
