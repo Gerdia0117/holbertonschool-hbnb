@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBnB - Add Review</title>
-    <link rel="icon" href="images/icon.png" type="image/png">
+    <title>Add Review</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="review-page">
+<body>
     <main>
-        <h1 id="page-title">Reviewing: <span id="place-name-display">Loading...</span></h1>
+        <!-- Add something to identify the place you're reviewing -->
+        <h2>Reviewing: <span id="place-name">Loading...</span></h2>
         
-        <form id="review-form" class="form">
+        <form id="review-form">
             <h2>Add a Review</h2>
-            
             <label for="review">Your Review:</label>
             <textarea id="review" name="review" required></textarea>
-            
             <label for="rating">Rating:</label>
             <select id="rating" name="rating" required>
                 <option value="">Select rating</option>
@@ -26,7 +24,6 @@
                 <option value="4">4 Stars</option>
                 <option value="5">5 Stars</option>
             </select>
-            
             <button type="submit">Submit Review</button>
         </form>
     </main>

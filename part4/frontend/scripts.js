@@ -245,32 +245,15 @@ function checkAuthenticationForPlaceDetails() {
         }
     }
 
+    // Show/hide add review section based on authentication
     if (addReviewSection) {
         if (token) {
             addReviewSection.style.display = 'block';
-            // Setup review form submission handler on place.html
-            const reviewForm = document.getElementById('review-form');
-            if (reviewForm) {
-                reviewForm.addEventListener('submit', async (event) => {
-                    event.preventDefault();
-                    
-                    const placeId = getPlaceIdFromURL();
-                    const reviewText = document.getElementById('review-text').value;
-                    const rating = document.getElementById('rating').value;
-                    
-                    // Disable submit button during request
-                    const submitButton = reviewForm.querySelector('button[type="submit"]');
-                    const originalText = submitButton.textContent;
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Submitting...';
-                    
-                    try {
-                        await submitReview(token, placeId, reviewText, rating);
-                    } finally {
-                        submitButton.disabled = false;
-                        submitButton.textContent = originalText;
-                    }
-                });
+            // Set the add review link
+            const addReviewLink = document.getElementById('add-review-link');
+            if (addReviewLink) {
+                const placeId = getPlaceIdFromURL();
+                addReviewLink.href = `add_review.html?place_id=${placeId}`;
             }
         } else {
             addReviewSection.style.display = 'none';
@@ -432,85 +415,67 @@ async function displayReviews(reviews) {
 }
 
 // ========================================
-// TASK 4: Add Review Form (separate page)
+// TASK 4: Add Review Form
 // ========================================
 
-// Check if we're on the add_review.html page (not place.html with inline form)
-if (document.getElementById('place-name-display') && document.getElementById('review-form')) {
+// Check if we're on the add_review.html page
+if (document.getElementById('place-name')) {
     document.addEventListener('DOMContentLoaded', () => {
-        // Check authentication first
-        const token = getCookie('token');
-        if (!token) {
-            // Redirect unauthenticated users to index page
+        const token = checkAuthenticationForReview();
+        if (!token) return; // Will redirect if not authenticated
+        
+        const placeId = getPlaceIdFromURL();
+        if (!placeId) {
+            alert('No place ID provided');
             window.location.href = 'index.html';
             return;
         }
         
-        // Check for both place_id and id parameters
-        const params = new URLSearchParams(window.location.search);
-        const placeId = params.get('place_id') || params.get('id');
-        
-        if (!placeId) {
-            document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Invalid place ID.</span>';
-            document.getElementById('review-form').style.display = 'none';
-            return;
-        }
-        
-        // Update back link
-        const backLink = document.getElementById('back-to-place');
-        if (backLink) {
-            backLink.href = `place.html?id=${placeId}`;
-        }
-        
         // Fetch and display place name
-        fetchPlaceNameForReview(placeId);
+        fetchPlaceName(placeId);
         
-        // Setup form submission handler
         const reviewForm = document.getElementById('review-form');
-        reviewForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            
-            // Get form values
-            const reviewText = document.getElementById('comment').value;
-            const rating = document.getElementById('rating').value;
-            
-            // Disable submit button during request
-            const submitButton = reviewForm.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-            
-            try {
-                await submitReview(token, placeId, reviewText, rating);
-            } finally {
-                // Re-enable submit button
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-            }
-        });
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                
+                const reviewText = document.getElementById('review').value;
+                await submitReview(token, placeId, reviewText);
+            });
+        }
     });
 }
 
-async function fetchPlaceNameForReview(placeId) {
+function checkAuthenticationForReview() {
+    const token = getCookie('token');
+    if (!token) {
+        window.location.href = 'index.html';
+        return null;
+    }
+    return token;
+}
+
+function getPlaceIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('place_id');
+}
+
+async function fetchPlaceName(placeId) {
     try {
         const response = await fetch(`${API_BASE_URL}/places/${placeId}`);
-        
         if (response.ok) {
             const place = await response.json();
-            const displayElement = document.getElementById('place-name-display');
-            if (displayElement) {
-                displayElement.textContent = `Reviewing: ${place.name || 'Unnamed Place'}`;
-            }
+            document.getElementById('place-name').textContent = place.name || 'Unknown Place';
         } else {
-            document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Place not found.</span>';
+            document.getElementById('place-name').textContent = 'Unknown Place';
         }
     } catch (error) {
-        console.error('Error fetching place:', error);
-        document.getElementById('place-name-display').innerHTML = '<span style="color: red;">Error loading place information.</span>';
+        console.error('Error fetching place name:', error);
+        document.getElementById('place-name').textContent = 'Unknown Place';
     }
 }
 
-async function submitReview(token, placeId, reviewText, rating) {
+async function submitReview(token, placeId, reviewText) {
     try {
         const response = await fetch(`${API_BASE_URL}/reviews/`, {
             method: 'POST',
@@ -523,42 +488,15 @@ async function submitReview(token, placeId, reviewText, rating) {
                 place_id: placeId
             })
         });
-
+        
         if (response.ok) {
-            const data = await response.json();
             alert('Review submitted successfully!');
-            
-            // Clear the form
             document.getElementById('review-form').reset();
-            
-            // If on place.html, reload reviews. Otherwise redirect.
-            if (document.getElementById('place-details')) {
-                // Reload reviews on place.html
-                await fetchReviews(placeId);
-            } else {
-                // Redirect to place details page after short delay
-                setTimeout(() => {
-                    window.location.href = `place.html?id=${placeId}`;
-                }, 1500);
-            }
         } else {
-            // Handle error response
-            const errorData = await response.json().catch(() => ({}));
-            const errorMessage = errorData.message || response.statusText || 'Failed to submit review';
-            
-            if (response.status === 400 && errorMessage.includes('already reviewed')) {
-                alert('You have already reviewed this place.');
-            } else if (response.status === 400 && errorMessage.includes('own place')) {
-                alert('You cannot review your own place.');
-            } else if (response.status === 401) {
-                alert('Your session has expired. Please login again.');
-                window.location.href = 'login.html';
-            } else {
-                alert('Failed to submit review: ' + errorMessage);
-            }
+            alert('Failed to submit review');
         }
     } catch (error) {
         console.error('Error submitting review:', error);
-        alert('Network error. Please check if the API server is running.');
+        alert('Failed to submit review');
     }
 }
