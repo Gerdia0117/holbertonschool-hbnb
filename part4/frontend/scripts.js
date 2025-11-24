@@ -419,12 +419,15 @@ async function displayReviews(reviews) {
 // Check if we're on the add_review.html page
 if (document.getElementById('place-name')) {
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('Add review page loaded');
         const token = checkAuthenticationForReview();
         if (!token) return; // Will redirect if not authenticated
         
         const placeId = getPlaceIdFromURL();
+        console.log('Place ID from URL:', placeId);
+        
         if (!placeId) {
-            alert('No place ID provided');
+            alert('No place ID provided in URL. Expected format: add_review.html?place_id=...');
             window.location.href = 'index.html';
             return;
         }
@@ -438,6 +441,7 @@ if (document.getElementById('place-name')) {
                 event.preventDefault();
                 
                 const reviewText = document.getElementById('review').value;
+                console.log('Submitting review for place:', placeId);
                 await submitReview(token, placeId, reviewText);
             });
         }
@@ -475,6 +479,7 @@ async function fetchPlaceName(placeId) {
 
 async function submitReview(token, placeId, reviewText) {
     try {
+        console.log('Submitting review:', { placeId, textLength: reviewText.length });
         const response = await fetch(`${API_BASE_URL}/reviews/`, {
             method: 'POST',
             headers: {
@@ -488,13 +493,21 @@ async function submitReview(token, placeId, reviewText) {
         });
         
         if (response.ok) {
+            const data = await response.json();
+            console.log('Review submitted successfully:', data);
             alert('Review submitted successfully!');
             document.getElementById('review-form').reset();
+            // Optionally redirect back to place details
+            setTimeout(() => {
+                window.location.href = `place.html?id=${placeId}`;
+            }, 1500);
         } else {
-            alert('Failed to submit review');
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Failed to submit review:', response.status, errorData);
+            alert(`Failed to submit review: ${errorData.message || response.statusText}`);
         }
     } catch (error) {
         console.error('Error submitting review:', error);
-        alert('Failed to submit review');
+        alert('Network error. Please check if the API server is running.');
     }
 }
