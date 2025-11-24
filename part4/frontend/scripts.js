@@ -316,52 +316,26 @@ async function displayPlaceDetails(place) {
     const placeDetailsSection = document.getElementById('place-details');
     placeDetailsSection.innerHTML = '';
 
-    // Create place title
+    // Create place title (name)
     const title = document.createElement('h1');
     title.textContent = place.name || 'Unnamed Place';
     placeDetailsSection.appendChild(title);
 
-    // Create card container
+    // Create card container for place info
     const card = document.createElement('div');
-    card.className = 'card';
-
-    // Add place image inside card
-    const img = document.createElement('img');
-    img.src = `images/${place.name}.png`;
-    img.alt = place.name || 'Place image';
-    img.onerror = function() { this.style.display = 'none'; };
-    card.appendChild(img);
-
-    // Fetch owner/host information if owner_id exists
-    let hostName = 'Unknown';
-    if (place.owner_id) {
-        try {
-            const userResponse = await fetch(`${API_BASE_URL}/users/${place.owner_id}`);
-            if (userResponse.ok) {
-                const user = await userResponse.json();
-                hostName = `${user.first_name} ${user.last_name}`;
-            }
-        } catch (error) {
-            console.error('Error fetching host info:', error);
-        }
-    }
-
-    // Host
-    const hostPara = document.createElement('p');
-    hostPara.innerHTML = `<span class="label">Host:</span> ${hostName}`;
-    card.appendChild(hostPara);
-
-    // Price
-    const pricePara = document.createElement('p');
-    pricePara.innerHTML = `<span class="label">Price per night:</span> $${place.price || 'N/A'}`;
-    card.appendChild(pricePara);
+    card.className = 'place-info';
 
     // Description
     const descPara = document.createElement('p');
-    descPara.innerHTML = `<span class="label">Description:</span> ${place.description || 'No description available.'}`;
+    descPara.innerHTML = `<strong>Description:</strong> ${place.description || 'No description available.'}`;
     card.appendChild(descPara);
 
-    // Amenities - Fetch actual amenity names
+    // Price
+    const pricePara = document.createElement('p');
+    pricePara.innerHTML = `<strong>Price per night:</strong> $${place.price || 'N/A'}`;
+    card.appendChild(pricePara);
+
+    // Amenities
     const amenitiesPara = document.createElement('p');
     if (place.amenities && place.amenities.length > 0) {
         // Extract amenity IDs from strings like "<Amenity UUID>"
@@ -385,12 +359,12 @@ async function displayPlaceDetails(place) {
         }
         
         if (amenityNames.length > 0) {
-            amenitiesPara.innerHTML = `<span class="label">Amenities:</span> ${amenityNames.join(', ')}`;
+            amenitiesPara.innerHTML = `<strong>Amenities:</strong> ${amenityNames.join(', ')}`;
         } else {
-            amenitiesPara.innerHTML = `<span class="label">Amenities:</span> No amenities listed`;
+            amenitiesPara.innerHTML = `<strong>Amenities:</strong> None`;
         }
     } else {
-        amenitiesPara.innerHTML = `<span class="label">Amenities:</span> No amenities listed`;
+        amenitiesPara.innerHTML = `<strong>Amenities:</strong> None`;
     }
     card.appendChild(amenitiesPara);
 
