@@ -1,111 +1,98 @@
-/* ===========================
-   HBnB Evolution - Unified Styles
-   All pages use this single CSS file
-   =========================== */
+/* HBnB Evolution - Complete Styles with Required Classes */
 
-/* Global Reset */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #e8e8e8;
-    overflow-x: hidden;
+    color: #333;
 }
 
-/* ===========================
-   Header Styles
-   =========================== */
+/* Header - REQUIRED: logo class and login-button class */
 header {
     background-color: #ff9800;
     padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
-    font-weight: bold;
 }
 
-header .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-header .logo img {
+.logo img {
     height: 36px;
     width: auto;
 }
 
-header .logo span {
-    font-size: 32px;
-    color: #0066cc;
-    font-weight: bold;
+header nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
-.login, .login-button {
-    cursor: pointer;
+header nav a {
     color: white;
     text-decoration: none;
-    font-weight: normal;
     font-size: 16px;
 }
 
-.login:hover {
+header nav a:hover {
     opacity: 0.9;
 }
 
-#logout-button {
-    background-color: transparent;
-    border: none;
+.login-button {
     color: white;
-    font-weight: normal;
-    cursor: pointer;
+    text-decoration: none;
     font-size: 16px;
-    font-family: Arial, sans-serif;
 }
 
-#logout-button:hover {
-    opacity: 0.9;
-}
-
-/* ===========================
-   Index Page - Places List
-   =========================== */
-.container {
-    text-align: center;
+/* Main Content */
+main {
     padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 h1 {
     text-align: center;
     font-size: 32px;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
-.filter {
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Filter Section */
+#filter {
+    text-align: center;
     margin-bottom: 30px;
+}
+
+#filter label {
+    margin-right: 10px;
     font-size: 18px;
 }
 
-.filter select {
-    padding: 5px 10px;
+#filter select {
+    padding: 8px 12px;
     font-size: 16px;
-    border-radius: 4px;
+    border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-.places {
+/* Places List */
+#places-list {
     display: flex;
-    gap: 30px;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
 }
 
-/* Place Card Styles (REQUIRED SPECS) */
+/* REQUIRED: place-card class with FIXED PARAMETERS */
 .place-card {
     background-color: white;
     width: 300px;
@@ -128,9 +115,8 @@ h1 {
 }
 
 .place-card h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 10px;
 }
 
 .place-card p {
@@ -139,6 +125,7 @@ h1 {
     margin-bottom: 15px;
 }
 
+/* REQUIRED: details-button class */
 .details-button {
     background-color: #ff9800;
     color: white;
@@ -156,44 +143,29 @@ h1 {
     background-color: #e68900;
 }
 
-/* Maintain .btn for backwards compatibility */
-.btn {
-    background-color: #ff9800;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn:hover {
-    background-color: #e68900;
-}
-
-/* ===========================
-   Place Details Page
-   =========================== */
-.place-details-container {
-    padding: 40px 20px;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-/* Place Details Page */
+/* REQUIRED: place-details class */
 .place-details {
     background-color: white;
-    padding: 40px;
+    padding: 30px;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     margin-bottom: 40px;
-    text-align: left;
-    width: auto;
 }
 
+.place-details h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.place-details img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* REQUIRED: place-info class */
 .place-info {
     margin: 20px 0;
 }
@@ -201,51 +173,24 @@ h1 {
 .place-info p {
     margin: 10px 0;
     font-size: 16px;
-    color: #333;
+    line-height: 1.6;
 }
 
-.place-details img, .place-info img {
-    background-color: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 40px;
-    text-align: left;
-    width: auto;
-}
-
-.place-details-container .card p {
-    margin: 10px 0;
-    font-size: 16px;
-    color: #333;
-}
-
-.place-details-container .card img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.place-details-container h1 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 30px;
-}
-
-.label {
+.place-info strong {
     font-weight: bold;
 }
 
 /* Reviews Section */
-.reviews-title {
+#reviews-section {
+    margin-top: 40px;
+}
+
+#reviews-section h2 {
     font-size: 24px;
-    font-weight: bold;
     margin-bottom: 20px;
 }
 
-/* Review Card Styles (REQUIRED SPECS) */
+/* REQUIRED: review-card class with FIXED PARAMETERS */
 .review-card {
     background-color: white;
     margin: 20px;              /* REQUIRED: 20px margin */
@@ -260,24 +205,63 @@ h1 {
     font-size: 16px;
 }
 
-/* Maintain .review for backwards compatibility */
-.review {
+.review-card strong {
+    font-weight: bold;
+    color: #333;
+}
+
+/* REQUIRED: add-review class */
+.add-review {
     background-color: white;
-    margin: 20px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 40px;
+}
+
+/* REQUIRED: form class */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form input,
+.form textarea,
+.form select {
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.review p {
-    margin: 8px 0;
     font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
 }
 
-/* ===========================
-   Login Page (Centered)
-   =========================== */
+.form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.form button:hover {
+    background-color: #e68900;
+}
+
+/* Login Page */
 .login-page {
     display: flex;
     justify-content: center;
@@ -295,7 +279,7 @@ h1 {
 .login-page form {
     background: white;
     padding: 40px 30px;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -303,14 +287,12 @@ h1 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 28px;
-    color: #333;
 }
 
 .login-page label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #555;
     font-size: 14px;
 }
 
@@ -318,14 +300,9 @@ h1 {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 15px;
-}
-
-.login-page input:focus {
-    outline: none;
-    border-color: #ff9800;
 }
 
 .login-page button {
@@ -334,94 +311,41 @@ h1 {
     background: #ff9800;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.login-page button:hover {
-    background: #e68a00;
-}
-
-.login-page button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-/* ===========================
-   Add Review Page
-   =========================== */
-.review-page {
-    background: #f4f4f4;
-}
-
-.review-page .container {
-    width: 70%;
-    margin: 40px auto;
-    text-align: left;
-}
-
-.review-page h1 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 40px;
-    font-weight: 600;
-}
-
-.review-page h2 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.review-page label {
-    font-size: 16px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 6px;
-}
-
-.review-page textarea {
-    width: 100%;
-    height: 80px;
-    font-size: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #dcdcdc;
-    resize: none;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-}
-
-.review-page select {
-    width: 100%;
-    padding: 12px;
-    font-size: 15px;
-    border-radius: 5px;
-    border: 1px solid #dcdcdc;
-    margin-bottom: 25px;
-}
-
-.review-page button {
-    width: 100%;
-    padding: 14px;
-    background: #ff9800;
-    color: white;
-    border: none;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
 }
 
-.review-page button:hover {
+.login-page button:hover {
     background: #e68900;
 }
 
-/* ===========================
-   Footer
-   =========================== */
+/* Add Review Page */
+.review-page {
+    background: #f4f4f4;
+}
+
+.review-page main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.review-page h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.review-page form {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Footer - REQUIRED: All rights reserved text */
 footer {
     background-color: #ff9800;
     padding: 20px;
@@ -429,27 +353,16 @@ footer {
     margin-top: 60px;
     font-size: 14px;
     color: white;
-    font-weight: normal;
 }
 
-/* ===========================
-   Utility Classes
-   =========================== */
-.loading {
+/* Utility Classes */
+.loading,
+.error {
     text-align: center;
+    padding: 20px;
     font-size: 18px;
-    color: #868582;
 }
 
 .error {
-    text-align: center;
-    font-size: 18px;
     color: #e74c3c;
-}
-
-.place-name {
-    text-align: center;
-    font-size: 18px;
-    color: #868582;
-    margin-bottom: 30px;
 }

@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>HBNB - Places</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Available Places</title>
     <link rel="icon" href="images/icon.png" type="image/png">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="images/logo.png" alt="hbnb logo">
+            <img src="images/logo.png" alt="HBnB Logo">
         </div>
-        <div>
+        <nav>
+            <a href="index.html">Home</a>
             <a href="login.html" id="login-link" class="login-button">Login</a>
-            <button id="logout-button" style="display: none;" onclick="logout()">Logout</button>
-        </div>
+        </nav>
     </header>
 
-    <div class="container">
+    <main>
         <h1>Available Places</h1>
-        <div class="filter">
-            <strong>Max Price:</strong>
+        
+        <section id="filter">
+            <label for="price-filter"><strong>Max Price:</strong></label>
             <select id="price-filter">
                 <option value="all">All</option>
-                <option value="10">Up to $10</option>
-                <option value="50">Up to $50</option>
-                <option value="100">Up to $100</option>
-                <option value="150">Up to $150</option>
-                <option value="250">Up to $250</option>
+                <option value="50">$50</option>
+                <option value="100">$100</option>
+                <option value="150">$150</option>
+                <option value="200">$200</option>
             </select>
-        </div>
+        </section>
 
-        <div class="places" id="places">
-            <p class="loading">Loading places...</p>
-        </div>
-    </div>
+        <section id="places-list">
+            <!-- Place cards will be dynamically populated here -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB Evolution. All rights reserved.</p>
+    </footer>
 
     <script src="scripts.js"></script>
 </body>
