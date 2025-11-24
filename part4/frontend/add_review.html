@@ -1,150 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HBNB - Add Review</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviewing: Place Name</title>
     <link rel="icon" href="images/icon.png" type="image/png">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fefefe;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f4f4;
         }
-        header {
-            background-color: #fd9703;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: black;
-            font-weight: bold;
-        }
-        header .logo {
-            font-size: 24px;
-        }
-        .login {
-            cursor: pointer;
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .login:hover {
-            opacity: 0.8;
-        }
+
         .container {
-            padding: 40px 20px;
-            max-width: 900px;
-            margin: 0 auto;
+            width: 70%;
+            margin: 40px auto;
+            text-align: left;
         }
+
         h1 {
             text-align: center;
             font-size: 36px;
-            margin-bottom: 20px;
-        }
-        .place-name {
-            text-align: center;
-            font-size: 18px;
-            color: #868582;
-            margin-bottom: 30px;
-        }
-        .card {
-            background-color: #f2f2f2;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.15);
             margin-bottom: 40px;
+            font-weight: 600;
         }
-        .card label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        .card select,
-        .card textarea {
-            width: 100%;
-            padding: 10px;
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        }
+
+        label {
             font-size: 16px;
-            font-family: Arial, sans-serif;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            font-size: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            resize: none;
+            margin-bottom: 20px;
             box-sizing: border-box;
         }
-        .card textarea {
-            resize: vertical;
-            min-height: 120px;
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            margin-bottom: 25px;
         }
-        .btn {
-            background-color: #fd9703;
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff9800;
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 6px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
         }
-        .btn:hover {
-            opacity: 0.9;
+
+        button:hover {
+            background: #e68a00;
         }
-        footer {
-            background-color: #fd9703;
-            padding: 15px;
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-            color: black;
-            font-weight: bold;
-        }
-        .loading, .error {
-            text-align: center;
-            font-size: 18px;
-            color: #868582;
-        }
+
         .error {
             color: #e74c3c;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">hbnb</div>
-        <div>
-            <a href="index.html" class="login">Back to Places</a>
-        </div>
-    </header>
 
-    <div class="container">
-        <h1>Add a Review</h1>
-        <p id="place-name-display" class="place-name">Loading place information...</p>
-        
-        <div class="card">
-            <form id="review-form">
-                <label for="rating">Rating:</label>
-                <select id="rating" name="rating" required>
-                    <option value="">Select a rating</option>
-                    <option value="5">5 - Excellent ★★★★★</option>
-                    <option value="4">4 - Very Good ★★★★☆</option>
-                    <option value="3">3 - Good ★★★☆☆</option>
-                    <option value="2">2 - Fair ★★☆☆☆</option>
-                    <option value="1">1 - Poor ★☆☆☆☆</option>
-                </select>
+<div class="container">
+    <h1 id="page-title">Reviewing: <span id="place-name-display">Loading...</span></h1>
 
-                <label for="comment">Your Review:</label>
-                <textarea id="comment" name="comment" required rows="6" placeholder="Share your experience..."></textarea>
+    <h2>Add a Review</h2>
 
-                <button type="submit" class="btn">Submit Review</button>
-            </form>
-        </div>
-    </div>
+    <form id="review-form">
+        <label for="comment">Your Review:</label>
+        <textarea id="comment" name="comment" required placeholder=""></textarea>
 
-    <footer>
-        © 2024 HBnB Evolution. All rights reserved.
-    </footer>
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+            <option value="">Select a rating</option>
+            <option value="1">1 Star</option>
+            <option value="2">2 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="5">5 Stars</option>
+        </select>
 
-    <script src="scripts.js"></script>
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+
+<script src="scripts.js"></script>
 </body>
 </html>
