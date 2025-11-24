@@ -158,7 +158,7 @@ function displayPlaces(places) {
 
     places.forEach(place => {
         const placeCard = document.createElement('div');
-        placeCard.className = 'card';
+        placeCard.className = 'place-card';
         placeCard.dataset.price = place.price;
 
         // Use place name as image filename
@@ -168,7 +168,7 @@ function displayPlaces(places) {
             <img src="${imagePath}" alt="${place.name}" onerror="this.style.display='none'">
             <h2>${place.name}</h2>
             <p>Price per night: $${place.price}</p>
-            <button class="btn" onclick="viewPlaceDetails('${place.id}')">View Details</button>
+            <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
         `;
 
         placesContainer.appendChild(placeCard);
@@ -187,7 +187,7 @@ function setupPriceFilter() {
 }
 
 function filterPlacesByPrice(maxPrice) {
-    const placeCards = document.querySelectorAll('.card');
+    const placeCards = document.querySelectorAll('.place-card');
 
     placeCards.forEach(card => {
         const price = parseFloat(card.dataset.price);
@@ -389,7 +389,7 @@ async function displayReviews(reviews) {
     // Fetch user information for each review
     for (const review of reviews) {
         const reviewCard = document.createElement('div');
-        reviewCard.className = 'review';
+        reviewCard.className = 'review-card';
 
         // Fetch user name
         let userName = 'Anonymous';
