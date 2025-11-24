@@ -158,13 +158,23 @@ function displayPlaces(places) {
 
     places.forEach(place => {
         const placeCard = document.createElement('div');
-        placeCard.className = 'place-card';
         placeCard.dataset.price = place.price;
+        placeCard.style.cssText = `
+            background: white;
+            width: 320px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        `;
 
         placeCard.innerHTML = `
-            <h3>${place.name}</h3>
-            <p>Price per night: $${place.price}</p>
-            <button class="details-button" onclick="viewPlaceDetails('${place.id}')">View Details</button>
+            <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: #000; font-weight: bold;">${place.name}</h3>
+            <p style="font-size: 1rem; margin-bottom: 25px; color: #333;">Price per night: $${place.price}</p>
+            <button onclick="viewPlaceDetails('${place.id}')" style="background-color: #ff9800; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer;">View Details</button>
         `;
 
         placesContainer.appendChild(placeCard);

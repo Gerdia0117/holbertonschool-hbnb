@@ -19,12 +19,12 @@
         </nav>
     </header>
 
-    <main>
-        <h1>Available Places</h1>
+    <main style="background: #e8e8e8; padding: 40px 20px; min-height: calc(100vh - 120px);">
+        <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 30px; color: #000;">Available Places</h1>
         
-        <div id="filter">
-            <label for="price-filter"><strong>Max Price:</strong></label>
-            <select id="price-filter">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <label for="price-filter" style="font-size: 1.1rem; font-weight: bold; margin-right: 10px;">Max Price:</label>
+            <select id="price-filter" style="padding: 8px 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
                 <option value="all">All</option>
                 <option value="10">$10</option>
                 <option value="50">$50</option>
@@ -32,7 +32,7 @@
             </select>
         </div>
 
-        <div id="places-list">
+        <div id="places-list" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1200px; margin: 0 auto;">
             <!-- Place cards will be dynamically populated here -->
         </div>
     </main>
